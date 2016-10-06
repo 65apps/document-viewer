@@ -1,19 +1,18 @@
 package org.ebookdroid.common.notifications;
 
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.content.Intent;
 
-import org.emdev.BaseDroidApp;
-
 @TargetApi(11)
 class ModernNotificationManager extends AbstractNotificationManager {
 
     @Override
     public int notify(final CharSequence title, final CharSequence message, final Intent intent) {
-        final Notification.Builder nb = new Notification.Builder(BaseDroidApp.context);
+        final Notification.Builder nb = new Notification.Builder(EBookDroid.context);
 
         nb.setSmallIcon(R.drawable.application_icon);
         nb.setAutoCancel(true);

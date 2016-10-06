@@ -1,5 +1,6 @@
 package org.ebookdroid.ui.library;
 
+import org.emdev.ui.actions.Actions;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.common.settings.SettingsManager;
 import org.ebookdroid.common.settings.books.BookSettings;
@@ -234,7 +235,7 @@ public class BrowserActivity extends AbstractActionActivity<BrowserActivity, Bro
     }
 
     protected void addBookmarkMenuItem(final Menu menu, final Bookmark b) {
-        final MenuItem bmi = menu.add(R.id.actions_goToBookmarkGroup, R.id.actions_goToBookmark, Menu.NONE, b.name);
+        final MenuItem bmi = menu.add(Actions.actions_goToBookmarkGroup, Actions.actions_goToBookmark, Menu.NONE, b.name);
         bmi.setIcon(R.drawable.viewer_menu_bookmark);
         ActionMenuHelper.setMenuItemExtra(bmi, "bookmark", b);
     }

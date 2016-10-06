@@ -1,5 +1,7 @@
 package org.ebookdroid.ui.library;
 
+import org.ebookdroid.app.EBookDroid;
+import org.emdev.ui.actions.Actions;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.common.settings.LibSettings;
 import org.ebookdroid.common.settings.books.BookSettings;
@@ -39,7 +41,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.emdev.BaseDroidApp;
 import org.emdev.common.android.AndroidVersion;
 import org.emdev.common.filesystem.MediaManager;
 import org.emdev.ui.AbstractActionActivity;
@@ -132,16 +133,16 @@ public class RecentActivity extends AbstractActionActivity<RecentActivity, Recen
         }
 
         ActionMenuHelper.setMenuItemExtra(menu, R.id.recent_storage_all, "path", "/");
-        ActionMenuHelper.setMenuItemExtra(menu, R.id.recent_storage_external, "path", BaseDroidApp.EXT_STORAGE.getAbsolutePath());
+        ActionMenuHelper.setMenuItemExtra(menu, R.id.recent_storage_external, "path", EBookDroid.EXT_STORAGE.getAbsolutePath());
 
         final MenuItem storageMenu = menu.findItem(R.id.recent_storage_menu);
         if (storageMenu != null) {
             final SubMenu subMenu = storageMenu.getSubMenu();
-            subMenu.removeGroup(R.id.actions_storageGroup);
+            subMenu.removeGroup(Actions.actions_storageGroup);
 
             final Set<String> added = new HashSet<String>();
             added.add("/");
-            added.add(FileUtils.getCanonicalPath(BaseDroidApp.EXT_STORAGE));
+            added.add(FileUtils.getCanonicalPath(EBookDroid.EXT_STORAGE));
 
             if (ls.showScanningInMenu) {
                 for (final String path : ls.autoScanDirs) {
@@ -165,7 +166,7 @@ public class RecentActivity extends AbstractActionActivity<RecentActivity, Recen
     }
 
     protected void addStorageMenuItem(final Menu menu, final int resId, final String name, final String path) {
-        final MenuItem bmi = menu.add(R.id.actions_storageGroup, R.id.actions_storage, Menu.NONE, name);
+        final MenuItem bmi = menu.add(Actions.actions_storageGroup, Actions.actions_storage, Menu.NONE, name);
         bmi.setIcon(resId);
         ActionMenuHelper.setMenuItemExtra(bmi, "path", path);
     }
@@ -248,7 +249,7 @@ public class RecentActivity extends AbstractActionActivity<RecentActivity, Recen
     }
 
     protected void addBookmarkMenuItem(final Menu menu, final Bookmark b) {
-        final MenuItem bmi = menu.add(R.id.actions_goToBookmarkGroup, R.id.actions_goToBookmark, Menu.NONE, b.name);
+        final MenuItem bmi = menu.add(Actions.actions_goToBookmarkGroup, Actions.actions_goToBookmark, Menu.NONE, b.name);
         bmi.setIcon(R.drawable.viewer_menu_bookmark);
         ActionMenuHelper.setMenuItemExtra(bmi, "bookmark", b);
     }

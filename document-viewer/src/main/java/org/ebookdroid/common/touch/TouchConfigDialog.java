@@ -121,7 +121,7 @@ public class TouchConfigDialog extends Dialog {
         view.setSelection(0);
     }
 
-    @ActionMethod(ids = R.id.tapZonesConfigReset)
+    @ActionMethod(ids = {/*R.id.tapZonesConfigReset*/})
     public void resetRegion(final ActionEx action) {
         if (wrapper != null) {
             for (final Region r : profile.regions) {
@@ -137,7 +137,7 @@ public class TouchConfigDialog extends Dialog {
         }
     }
 
-    @ActionMethod(ids = R.id.tapZonesConfigClear)
+    @ActionMethod(ids = {/*R.id.tapZonesConfigClear*/})
     public void clearRegion(final ActionEx action) {
         if (wrapper != null) {
             wrapper.r.clear();
@@ -148,7 +148,7 @@ public class TouchConfigDialog extends Dialog {
         }
     }
 
-    @ActionMethod(ids = R.id.tapZonesConfigDelete)
+    @ActionMethod(ids = {/*R.id.tapZonesConfigDelete*/})
     public void deleteRegion(final ActionEx action) {
         if (wrapper != null) {
             adapter.remove(wrapper);

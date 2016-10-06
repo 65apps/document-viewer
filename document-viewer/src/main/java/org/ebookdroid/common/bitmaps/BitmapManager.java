@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.emdev.BaseDroidApp;
+import org.ebookdroid.app.EBookDroid;
 import org.emdev.common.log.LogContext;
 import org.emdev.common.log.LogManager;
 import org.emdev.utils.collections.ArrayDeque;
@@ -48,7 +48,7 @@ public class BitmapManager {
         synchronized (resources) {
             Bitmap bitmap = resources.get(resourceId);
             if (bitmap == null || bitmap.isRecycled()) {
-                final Resources resources = BaseDroidApp.context.getResources();
+                final Resources resources = EBookDroid.context.getResources();
                 bitmap = BitmapFactory.decodeResource(resources, resourceId);
             }
             return bitmap;

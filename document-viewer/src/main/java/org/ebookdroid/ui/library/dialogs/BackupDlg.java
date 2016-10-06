@@ -103,7 +103,7 @@ public class BackupDlg extends Dialog implements TextWatcher, ListView.OnItemLon
         removeButton.setEnabled(0 < checked);
     }
 
-    @ActionMethod(ids = R.id.backupButton)
+    @ActionMethod(ids = {/*R.id.backupButton*/})
     public void backup(final ActionEx action) {
         final BackupInfo backup = new BackupInfo(newBackupNameEdit.getText().toString());
         BackupManager.backup(backup);
@@ -111,7 +111,7 @@ public class BackupDlg extends Dialog implements TextWatcher, ListView.OnItemLon
         updateAdapter();
     }
 
-    @ActionMethod(ids = R.id.restoreBackupButton)
+    @ActionMethod(ids = {/*R.id.restoreBackupButton*/})
     public void restore(final ActionEx action) {
         if (getCheckedPositionsCount() == 1) {
             final int pos = getFirstCheckedPosition();
@@ -123,7 +123,7 @@ public class BackupDlg extends Dialog implements TextWatcher, ListView.OnItemLon
         }
     }
 
-    @ActionMethod(ids = R.id.removeBackupButton)
+    @ActionMethod(ids = {/*R.id.removeBackupButton*/})
     public void remove(final ActionEx action) {
         final SparseBooleanArray checked = backupsList.getCheckedItemPositions();
         if (checked != null) {

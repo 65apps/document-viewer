@@ -1,5 +1,6 @@
 package org.ebookdroid.ui.viewer.views;
 
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.core.ViewState;
 import org.ebookdroid.ui.viewer.IView;
@@ -10,7 +11,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import org.emdev.BaseDroidApp;
 import org.emdev.ui.gl.BitmapTexture;
 import org.emdev.ui.gl.GLCanvas;
 
@@ -37,7 +37,7 @@ public enum DragMark {
 
     public synchronized void draw(final Canvas canvas, final ViewState viewState) {
         if (dragBitmap == null || dragBitmap.isRecycled()) {
-            dragBitmap = BitmapFactory.decodeResource(BaseDroidApp.context.getResources(), resId);
+            dragBitmap = BitmapFactory.decodeResource(EBookDroid.context.getResources(), resId);
         }
 
         final Rect l = viewState.ctrl.getScrollLimits();
@@ -52,7 +52,7 @@ public enum DragMark {
 
     public synchronized void draw(final GLCanvas canvas, final ViewState viewState) {
         if (dragBitmap == null || dragBitmap.isRecycled()) {
-            dragBitmap = BitmapFactory.decodeResource(BaseDroidApp.context.getResources(), resId);
+            dragBitmap = BitmapFactory.decodeResource(EBookDroid.context.getResources(), resId);
             if (dragBitmapTx != null) {
                 dragBitmapTx.recycle();
                 dragBitmapTx = null;

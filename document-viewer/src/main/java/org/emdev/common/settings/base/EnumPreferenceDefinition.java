@@ -3,7 +3,7 @@ package org.emdev.common.settings.base;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import org.emdev.BaseDroidApp;
+import org.ebookdroid.app.EBookDroid;
 import org.emdev.utils.enums.EnumUtils;
 import org.emdev.utils.enums.ResourceConstant;
 import org.json.JSONObject;
@@ -16,7 +16,7 @@ public class EnumPreferenceDefinition<E extends Enum<E> & ResourceConstant> exte
     public EnumPreferenceDefinition(final Class<E> enumClass, final int keyRes, final int defValRef) {
         super(keyRes);
         this.enumClass = enumClass;
-        this.defValue = EnumUtils.getByResValue(enumClass, BaseDroidApp.context.getString(defValRef), null);
+        this.defValue = EnumUtils.getByResValue(enumClass, EBookDroid.context.getString(defValRef), null);
     }
 
     @Override

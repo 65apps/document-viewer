@@ -7,7 +7,7 @@ import java.io.File;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.emdev.BaseDroidApp;
+import org.ebookdroid.app.EBookDroid;
 import org.emdev.utils.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,7 +19,7 @@ public class FileListPreferenceDefinition extends BasePreferenceDefinition<Set<S
 
     public FileListPreferenceDefinition(final int keyRes, final int defValRes) {
         super(keyRes);
-        defValue = BaseDroidApp.context.getString(defValRes);
+        defValue = EBookDroid.context.getString(defValRes);
     }
 
     @Override

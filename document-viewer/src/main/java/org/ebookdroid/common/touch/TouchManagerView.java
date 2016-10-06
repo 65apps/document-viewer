@@ -1,5 +1,6 @@
 package org.ebookdroid.common.touch;
 
+import org.emdev.ui.actions.Actions;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.common.touch.TouchManager.Region;
 import org.ebookdroid.common.touch.TouchManager.TouchProfile;
@@ -226,7 +227,7 @@ public class TouchManagerView extends View {
 
         @Override
         public boolean onDoubleTap(final MotionEvent e) {
-            actions.getOrCreateAction(R.id.actions_toggleTouchManagerView).run();
+            actions.getOrCreateAction(Actions.actions_toggleTouchManagerView).run();
             return true;
         }
 

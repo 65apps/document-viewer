@@ -1,5 +1,6 @@
 package org.ebookdroid.ui.opds;
 
+import org.emdev.ui.actions.Actions;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.opds.model.Book;
 import org.ebookdroid.opds.model.Entry;
@@ -135,30 +136,30 @@ public class OPDSActivityController extends AbstractActivityController<OPDSActiv
         getManagedComponent().onCurrrentFeedChanged(feed);
     }
 
-    @ActionMethod(ids = R.id.opdsclose)
+    @ActionMethod(ids = {/*R.id.opdsclose*/})
     public void close(final ActionEx action) {
         getManagedComponent().finish();
     }
 
-    @ActionMethod(ids = R.id.opdshome)
+    @ActionMethod(ids = {/*R.id.opdshome*/})
     public void goHome(final ActionEx action) {
         setCurrentFeed(null);
     }
 
-    @ActionMethod(ids = R.id.opdsgoto)
+    @ActionMethod(ids = {/*R.id.opdsgoto*/})
     public void goTo(final ActionEx action) {
         final Feed feed = action.getParameter("feed");
         setCurrentFeed(feed);
     }
 
-    @ActionMethod(ids = R.id.opdsupfolder)
+    @ActionMethod(ids = {/*R.id.opdsupfolder*/})
     public void goUp(final ActionEx action) {
         final Feed dir = adapter.getCurrentFeed();
         final Feed parent = dir != null ? dir.parent : null;
         setCurrentFeed(parent);
     }
 
-    @ActionMethod(ids = R.id.opdsnextfolder)
+    @ActionMethod(ids = {/*R.id.opdsnextfolder*/})
     public void goNext(final ActionEx action) {
         final Feed dir = adapter.getCurrentFeed();
         final Feed next = dir != null ? dir.next : null;
@@ -167,7 +168,7 @@ public class OPDSActivityController extends AbstractActivityController<OPDSActiv
         }
     }
 
-    @ActionMethod(ids = R.id.opdsprevfolder)
+    @ActionMethod(ids = {/*R.id.opdsprevfolder*/})
     public void goPrev(final ActionEx action) {
         final Feed dir = adapter.getCurrentFeed();
         final Feed prev = dir != null ? dir.prev : null;
@@ -176,7 +177,7 @@ public class OPDSActivityController extends AbstractActivityController<OPDSActiv
         }
     }
 
-    @ActionMethod(ids = R.id.opdsrefreshfolder)
+    @ActionMethod(ids = {/*R.id.opdsrefreshfolder*/})
     public void refresh(final ActionEx action) {
         final Feed dir = adapter.getCurrentFeed();
         if (dir != null) {
@@ -184,7 +185,7 @@ public class OPDSActivityController extends AbstractActivityController<OPDSActiv
         }
     }
 
-    @ActionMethod(ids = { R.id.opdsaddfeed, R.id.opds_feed_add })
+    @ActionMethod(ids = { /*R.id.opdsaddfeed, R.id.opds_feed_add */})
     public void showAddFeedDlg(final ActionEx action) {
 
         final View childView = LayoutInflater.from(getManagedComponent()).inflate(R.layout.alias_url, null);
@@ -215,14 +216,14 @@ public class OPDSActivityController extends AbstractActivityController<OPDSActiv
 
         authCheck.setChecked(false);
 
-        builder.setPositiveButton(R.string.opds_addfeed_ok, R.id.actions_addFeed,
+        builder.setPositiveButton(R.string.opds_addfeed_ok, Actions.actions_addFeed,
                 new EditableValue("alias", aliasEdit), new EditableValue("url", urlEdit), new CheckableValue("auth",
                         authCheck), new EditableValue("login", loginEdit), new EditableValue("password", passwordEdit));
         builder.setNegativeButton();
         builder.show();
     }
 
-    @ActionMethod(ids = R.id.actions_addFeed)
+    @ActionMethod(ids = Actions.actions_addFeed)
     public void addFeed(final ActionEx action) {
         final String alias = LengthUtils.toString(action.getParameter("alias"));
         final String url = LengthUtils.toString(action.getParameter("url"));
@@ -240,7 +241,7 @@ public class OPDSActivityController extends AbstractActivityController<OPDSActiv
         }
     }
 
-    @ActionMethod(ids = { R.id.opds_feed_edit })
+    @ActionMethod(ids = { /*R.id.opds_feed_edit*/ })
     public void showEditFeedDlg(final ActionEx action) {
         final Feed feed = action.getParameter("feed");
 
@@ -278,7 +279,7 @@ public class OPDSActivityController extends AbstractActivityController<OPDSActiv
         loginEdit.setText(feed.login);
         passwordEdit.setText(feed.password);
 
-        builder.setPositiveButton(R.string.opds_editfeed_ok, R.id.actions_editFeed, new EditableValue("alias",
+        builder.setPositiveButton(R.string.opds_editfeed_ok, Actions.actions_editFeed, new EditableValue("alias",
                 aliasEdit), new EditableValue("url", urlEdit), new CheckableValue("auth", authCheck),
                 new EditableValue("login", loginEdit), new EditableValue("password", passwordEdit), new Constant(
                         "feed", feed));
@@ -286,7 +287,7 @@ public class OPDSActivityController extends AbstractActivityController<OPDSActiv
         builder.show();
     }
 
-    @ActionMethod(ids = R.id.actions_editFeed)
+    @ActionMethod(ids = Actions.actions_editFeed)
     public void editFeed(final ActionEx action) {
         final Feed feed = action.getParameter("feed");
         final String alias = LengthUtils.toString(action.getParameter("alias"));
@@ -300,24 +301,24 @@ public class OPDSActivityController extends AbstractActivityController<OPDSActiv
         }
     }
 
-    @ActionMethod(ids = { R.id.opds_feed_delete })
+    @ActionMethod(ids = { /*R.id.opds_feed_delete */})
     public void showDeleteFeedDlg(final ActionEx action) {
         final Feed feed = action.getParameter("feed");
         final ActionDialogBuilder builder = new ActionDialogBuilder(getManagedComponent(), this);
         builder.setTitle(R.string.opds_deletefeed_title);
         builder.setMessage(R.string.opds_deletefeed_msg);
-        builder.setPositiveButton(R.string.opds_deletefeed_ok, R.id.actions_deleteFeed, new Constant("feed", feed));
+        builder.setPositiveButton(R.string.opds_deletefeed_ok, Actions.actions_deleteFeed, new Constant("feed", feed));
         builder.setNegativeButton();
         builder.show();
     }
 
-    @ActionMethod(ids = R.id.actions_deleteFeed)
+    @ActionMethod(ids = Actions.actions_deleteFeed)
     public void deleteFeed(final ActionEx action) {
         final Feed feed = action.getParameter("feed");
         adapter.removeFeed(feed);
     }
 
-    @ActionMethod(ids = R.id.opds_book_download)
+    @ActionMethod(ids = {/*R.id.opds_book_download*/})
     public void showDownloadDlg(final ActionEx action) {
         final Book book = action.getParameter("book");
         final Link link = action.getParameter("link");
@@ -336,7 +337,7 @@ public class OPDSActivityController extends AbstractActivityController<OPDSActiv
             final ActionDialogBuilder builder = new ActionDialogBuilder(getManagedComponent(), this);
             builder.setTitle(R.string.opds_downloading_dlg_title);
             builder.setMessage(LengthUtils.safeString(target.type, rawType));
-            builder.setPositiveButton(R.id.actions_downloadBook, new Constant("book", book), new Constant(
+            builder.setPositiveButton(Actions.actions_downloadBook, new Constant("book", book), new Constant(
                     IActionController.DIALOG_ITEM_PROPERTY, 0));
             builder.setNegativeButton();
             builder.show();
@@ -351,11 +352,11 @@ public class OPDSActivityController extends AbstractActivityController<OPDSActiv
 
         final ActionDialogBuilder builder = new ActionDialogBuilder(getManagedComponent(), this);
         builder.setTitle(R.string.opds_downloading_type_dlg_title);
-        builder.setItems(items, getOrCreateAction(R.id.actions_downloadBook).putValue("book", book));
+        builder.setItems(items, getOrCreateAction(Actions.actions_downloadBook).putValue("book", book));
         builder.show();
     }
 
-    @ActionMethod(ids = R.id.actions_downloadBook)
+    @ActionMethod(ids = Actions.actions_downloadBook)
     public void doDownload(final ActionEx action) {
         final Book book = action.getParameter("book");
         final Integer index = action.getParameter(IActionController.DIALOG_ITEM_PROPERTY);

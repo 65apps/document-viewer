@@ -1,7 +1,8 @@
 package org.ebookdroid.ui.library;
 
 import org.ebookdroid.CodecType;
-import org.ebookdroid.EBookDroidApp;
+import org.ebookdroid.app.EBookDroid;
+import org.emdev.ui.actions.Actions;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.common.cache.CacheManager;
 import org.ebookdroid.common.cache.CacheManager.ICacheListener;
@@ -119,7 +120,7 @@ public class RecentActivityController extends AbstractActivityController<RecentA
             if (recentLoaded) {
                 return;
             }
-            EBookDroidApp.checkInstalledFonts(getManagedComponent());
+            EBookDroid.checkInstalledFonts(getManagedComponent());
         }
 
         changeLibraryView(recent != null ? RecentActivity.VIEW_RECENT : RecentActivity.VIEW_LIBRARY);
@@ -168,18 +169,18 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         }
     }
 
-    @ActionMethod(ids = R.id.recentmenu_cleanrecent)
+    @ActionMethod(ids = {/*R.id.recentmenu_cleanrecent*/})
     public void showClearRecentDialog(final ActionEx action) {
         final ActionDialogBuilder builder = new ActionDialogBuilder(getContext(), this);
 
         builder.setTitle(R.string.clear_recent_title);
-        builder.setMultiChoiceItems(R.array.list_clear_recent_mode, R.id.actions_clearRecent);
-        builder.setPositiveButton(R.id.actions_clearRecent);
+        builder.setMultiChoiceItems(R.array.list_clear_recent_mode, Actions.actions_clearRecent);
+        builder.setPositiveButton(Actions.actions_clearRecent);
         builder.setNegativeButton();
         builder.show();
     }
 
-    @ActionMethod(ids = R.id.actions_clearRecent)
+    @ActionMethod(ids = Actions.actions_clearRecent)
     public void doClearRecent(final ActionEx action) {
         if (action.isDialogItemSelected(ERASE_DISK_CACHE)) {
             CacheManager.clear();
@@ -203,7 +204,7 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         }
     }
 
-    @ActionMethod(ids = R.id.bookmenu_removefromrecent)
+    @ActionMethod(ids = {/*R.id.bookmenu_removefromrecent*/})
     public void removeBookFromRecents(final ActionEx action) {
         final BookNode book = action.getParameter(ActionMenuHelper.MENU_ITEM_SOURCE);
         if (book != null) {
@@ -213,7 +214,7 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         }
     }
 
-    @ActionMethod(ids = R.id.bookmenu_cleardata)
+    @ActionMethod(ids = {/*R.id.bookmenu_cleardata*/})
     public void removeCachedBookFiles(final ActionEx action) {
         final BookNode book = action.getParameter(ActionMenuHelper.MENU_ITEM_SOURCE);
         if (book != null) {
@@ -223,7 +224,7 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         }
     }
 
-    @ActionMethod(ids = R.id.bookmenu_deletesettings)
+    @ActionMethod(ids = {/*R.id.bookmenu_deletesettings*/})
     public void removeBookSettings(final ActionEx action) {
         final BookNode book = action.getParameter(ActionMenuHelper.MENU_ITEM_SOURCE);
         if (book != null) {
@@ -236,7 +237,7 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         }
     }
 
-    @ActionMethod(ids = R.id.recentmenu_searchBook)
+    @ActionMethod(ids = {/*R.id.recentmenu_searchBook*/})
     public void showSearchDlg(final ActionEx action) {
         final ActionDialogBuilder builder = new ActionDialogBuilder(getContext(), this);
 
@@ -247,13 +248,13 @@ public class RecentActivityController extends AbstractActivityController<RecentA
 
         builder.setTitle(R.string.search_book_dlg_title);
         builder.setView(input);
-        builder.setPositiveButton(android.R.string.search_go, R.id.actions_searchBook,
+        builder.setPositiveButton(android.R.string.search_go, Actions.actions_searchBook,
                 new EditableValue("input", input));
         builder.setNegativeButton();
         builder.show();
     }
 
-    @ActionMethod(ids = R.id.actions_searchBook)
+    @ActionMethod(ids = Actions.actions_searchBook)
     public void searchBook(final ActionEx action) {
         final Editable value = action.getParameter("input");
         final String searchQuery = value.toString();
@@ -264,12 +265,12 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         }
     }
 
-    @ActionMethod(ids = R.id.mainmenu_settings)
+    @ActionMethod(ids = {/*R.id.mainmenu_settings*/})
     public void showSettings(final ActionEx action) {
         SettingsUI.showAppSettings(getManagedComponent(), null);
     }
 
-    @ActionMethod(ids = { R.id.bookmenu_copy, R.id.bookmenu_move })
+    @ActionMethod(ids = { /*R.id.bookmenu_copy, R.id.bookmenu_move*/ })
     public void copyBook(final ActionEx action) {
         final BookNode book = action.getParameter("source");
         if (book == null) {
@@ -277,28 +278,28 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         }
         final boolean isCopy = action.id == R.id.bookmenu_copy;
         final int titleId = isCopy ? R.string.copy_book_to_dlg_title : R.string.move_book_to_dlg_title;
-        final int id = isCopy ? R.id.actions_doCopyBook : R.id.actions_doMoveBook;
+        final int id = isCopy ? Actions.actions_doCopyBook : Actions.actions_doMoveBook;
         getOrCreateAction(id).putValue("source", book);
 
         final FolderDlg dlg = new FolderDlg(this);
         dlg.show(new File(book.path), titleId, id);
     }
 
-    @ActionMethod(ids = R.id.actions_doCopyBook)
+    @ActionMethod(ids = Actions.actions_doCopyBook)
     public void doCopyBook(final ActionEx action) {
         final File targetFolder = action.getParameter(FolderDlg.SELECTED_FOLDER);
         final BookNode book = action.getParameter("source");
         new CopyBookTask(this.getContext(), recentAdapter, targetFolder).execute(book);
     }
 
-    @ActionMethod(ids = R.id.actions_doMoveBook)
+    @ActionMethod(ids = Actions.actions_doMoveBook)
     public void doMoveBook(final ActionEx action) {
         final File targetFolder = action.getParameter(FolderDlg.SELECTED_FOLDER);
         final BookNode book = action.getParameter("source");
         new MoveBookTask(this.getContext(), recentAdapter, targetFolder).execute(book);
     }
 
-    @ActionMethod(ids = R.id.bookmenu_rename)
+    @ActionMethod(ids = {/*R.id.bookmenu_rename*/})
     public void renameBook(final ActionEx action) {
         final BookNode book = action.getParameter("source");
         if (book == null) {
@@ -315,12 +316,12 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         builder.setTitle(R.string.book_rename_title);
         builder.setMessage(R.string.book_rename_msg);
         builder.setView(input);
-        builder.setPositiveButton(R.id.actions_doRenameBook, new Constant("source", book), new Constant("file", file),
+        builder.setPositiveButton(Actions.actions_doRenameBook, new Constant("source", book), new Constant("file", file),
                 new EditableValue("input", input));
         builder.setNegativeButton().show();
     }
 
-    @ActionMethod(ids = R.id.actions_doRenameBook)
+    @ActionMethod(ids = Actions.actions_doRenameBook)
     public void doRenameBook(final ActionEx action) {
         final BookNode book = action.getParameter("source");
         final FileUtils.FilePath path = action.getParameter("file");
@@ -332,7 +333,7 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         }
     }
 
-    @ActionMethod(ids = R.id.bookmenu_delete)
+    @ActionMethod(ids = {/*R.id.bookmenu_delete*/})
     public void deleteBook(final ActionEx action) {
         final BookNode book = action.getParameter("source");
         if (book == null) {
@@ -342,11 +343,11 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         final ActionDialogBuilder builder = new ActionDialogBuilder(getContext(), this);
         builder.setTitle(R.string.book_delete_title);
         builder.setMessage(R.string.book_delete_msg);
-        builder.setPositiveButton(R.id.actions_doDeleteBook, new Constant("source", book));
+        builder.setPositiveButton(Actions.actions_doDeleteBook, new Constant("source", book));
         builder.setNegativeButton().show();
     }
 
-    @ActionMethod(ids = R.id.actions_doDeleteBook)
+    @ActionMethod(ids = Actions.actions_doDeleteBook)
     public void doDeleteBook(final ActionEx action) {
         final BookNode book = action.getParameter("source");
         if (book == null) {
@@ -370,7 +371,7 @@ public class RecentActivityController extends AbstractActivityController<RecentA
     public void setCurrentDir(final File newDir) {
     }
 
-    @ActionMethod(ids = { R.id.actions_goToBookmark })
+    @ActionMethod(ids = { Actions.actions_goToBookmark })
     public void openBook(final ActionEx action) {
         final BookNode book = action.getParameter(ActionMenuHelper.MENU_ITEM_SOURCE);
         final File file = new File(book.path);
@@ -380,14 +381,14 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         }
     }
 
-    @ActionMethod(ids = R.id.bookmenu_settings)
+    @ActionMethod(ids = {/*R.id.bookmenu_settings*/})
     public void openBookSettings(final ActionEx action) {
         final BookNode book = action.getParameter(ActionMenuHelper.MENU_ITEM_SOURCE);
         SettingsManager.create(0, book.path, false, null);
         SettingsUI.showBookSettings(getManagedComponent(), book.path);
     }
 
-    @ActionMethod(ids = R.id.bookmenu_openbookshelf)
+    @ActionMethod(ids = {/*R.id.bookmenu_openbookshelf*/})
     public void openBookShelf(final ActionEx action) {
         final BookNode book = action.getParameter(ActionMenuHelper.MENU_ITEM_SOURCE);
         final BookShelfAdapter bookShelf = getBookShelf(book);
@@ -397,7 +398,7 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         }
     }
 
-    @ActionMethod(ids = R.id.bookmenu_openbookfolder)
+    @ActionMethod(ids = {/*R.id.bookmenu_openbookfolder*/})
     public void openBookFolder(final ActionEx action) {
         final BookNode book = action.getParameter(ActionMenuHelper.MENU_ITEM_SOURCE);
         final Intent myIntent = new Intent(getManagedComponent(), BrowserActivity.class);
@@ -423,35 +424,35 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         getManagedComponent().startActivity(intent);
     }
 
-    @ActionMethod(ids = R.id.ShelfCaption)
+    @ActionMethod(ids = {/*R.id.ShelfCaption*/})
     public void showSelectShelfDlg(final ActionEx action) {
         final List<String> names = bookshelfAdapter.getListNames();
 
         if (LengthUtils.isNotEmpty(names)) {
             final ActionDialogBuilder builder = new ActionDialogBuilder(getContext(), this);
             builder.setTitle(R.string.bookcase_shelves);
-            builder.setItems(names.toArray(new String[names.size()]), this.getOrCreateAction(R.id.actions_selectShelf));
+            builder.setItems(names.toArray(new String[names.size()]), this.getOrCreateAction(Actions.actions_selectShelf));
             builder.show();
         }
     }
 
-    @ActionMethod(ids = R.id.actions_selectShelf)
+    @ActionMethod(ids = Actions.actions_selectShelf)
     public void selectShelf(final ActionEx action) {
         final Integer item = action.getParameter(IActionController.DIALOG_ITEM_PROPERTY);
         getManagedComponent().showBookshelf(item);
     }
 
-    @ActionMethod(ids = R.id.ShelfLeftButton)
+    @ActionMethod(ids = {/*R.id.ShelfLeftButton*/})
     public void selectPrevShelf(final ActionEx action) {
         getManagedComponent().showPrevBookshelf();
     }
 
-    @ActionMethod(ids = R.id.ShelfRightButton)
+    @ActionMethod(ids = {/*R.id.ShelfRightButton*/})
     public void selectNextShelf(final ActionEx action) {
         getManagedComponent().showNextBookshelf();
     }
 
-    @ActionMethod(ids = { R.id.recent_showlibrary, R.id.recent_showrecent })
+    @ActionMethod(ids = {/* R.id.recent_showlibrary, R.id.recent_showrecent*/ })
     public void goLibrary(final ActionEx action) {
         if (!LibSettings.current().useBookcase) {
             final int viewMode = getManagedComponent().getViewMode();
@@ -463,8 +464,8 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         }
     }
 
-    @ActionMethod(ids = { R.id.recent_showbrowser, R.id.recent_storage_all, R.id.recent_storage_external,
-            R.id.actions_storage })
+    @ActionMethod(ids = {/* R.id.recent_showbrowser, R.id.recent_storage_all, R.id.recent_storage_external,*/
+            Actions.actions_storage })
     public void goFileBrowser(final ActionEx action) {
         final Intent myIntent = new Intent(getManagedComponent(), BrowserActivity.class);
         final String path = action.getParameter("path");
@@ -474,18 +475,18 @@ public class RecentActivityController extends AbstractActivityController<RecentA
         getManagedComponent().startActivity(myIntent);
     }
 
-    @ActionMethod(ids = R.id.mainmenu_opds)
+    @ActionMethod(ids = {/*R.id.mainmenu_opds*/})
     public void goOPDSBrowser(final ActionEx action) {
         final Intent myIntent = new Intent(getManagedComponent(), OPDSActivity.class);
         getManagedComponent().startActivity(myIntent);
     }
 
-    @ActionMethod(ids = R.id.recentmenu_backupsettings)
+    @ActionMethod(ids = {/*R.id.recentmenu_backupsettings*/})
     public void backupSettings(final ActionEx action) {
         new BackupDlg(m_managedComponent).show();
     }
 
-    @ActionMethod(ids = R.id.mainmenu_close)
+    @ActionMethod(ids = {Actions.actions_mainmenu_close})
     public void close(final ActionEx action) {
         getManagedComponent().finish();
     }

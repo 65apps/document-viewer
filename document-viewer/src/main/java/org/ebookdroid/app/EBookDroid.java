@@ -1,56 +1,43 @@
-package org.ebookdroid;
+package org.ebookdroid.app;
 
+import android.content.Context;
+import android.util.Log;
+
+import org.ebookdroid.EBookDroidVersion;
 import org.ebookdroid.common.bitmaps.BitmapManager;
 import org.ebookdroid.common.bitmaps.ByteBufferManager;
 import org.ebookdroid.common.cache.CacheManager;
 import org.ebookdroid.common.settings.AppSettings;
 import org.ebookdroid.common.settings.BackupSettings;
 import org.ebookdroid.common.settings.LibSettings;
-import org.ebookdroid.common.settings.LibSettings.Diff;
 import org.ebookdroid.common.settings.SettingsManager;
 import org.ebookdroid.common.settings.listeners.IAppSettingsChangeListener;
 import org.ebookdroid.common.settings.listeners.IBackupSettingsChangeListener;
 import org.ebookdroid.common.settings.listeners.ILibSettingsChangeListener;
-import org.ebookdroid.ui.library.RecentActivityController;
-
-import android.content.Context;
-import android.util.Log;
-import android.webkit.WebView;
-
-import org.emdev.BaseDroidApp;
 import org.emdev.common.backup.BackupManager;
 import org.emdev.common.filesystem.MediaManager;
 import org.emdev.common.fonts.FontManager;
-import org.emdev.ui.actions.ActionController;
-import org.emdev.ui.actions.ActionDialogBuilder;
-import org.emdev.ui.gl.GLConfiguration;
 import org.emdev.utils.concurrent.Flag;
-import org.sufficientlysecure.viewer.R;
 
-public class EBookDroidApp extends BaseDroidApp implements IAppSettingsChangeListener, IBackupSettingsChangeListener,
+public final class EBookDroid extends BaseEBookDroid implements IAppSettingsChangeListener, IBackupSettingsChangeListener,
         ILibSettingsChangeListener {
 
     public static final Flag initialized = new Flag();
 
     public static EBookDroidVersion version;
 
-    private static EBookDroidApp instance;
+    private static EBookDroid instance;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see android.app.Application#onCreate()
-     */
     @Override
-    public void onCreate() {
-        super.onCreate();
+    public void initEBookDroid(Context context, String appStorageName) {
+        super.initEBookDroid(context, appStorageName);
 
         instance = this;
         version = EBookDroidVersion.get(APP_VERSION_CODE);
 
-        SettingsManager.init(this);
-        CacheManager.init(this);
-        MediaManager.init(this);
+        SettingsManager.init(context);
+        CacheManager.init(context);
+        MediaManager.init(context);
 
         initFonts();
 
@@ -67,20 +54,12 @@ public class EBookDroidApp extends BaseDroidApp implements IAppSettingsChangeLis
         FontManager.init(APP_STORAGE);
     }
 
-    @Override
     public void onTerminate() {
         SettingsManager.onTerminate();
-        MediaManager.onTerminate(this);
+        MediaManager.onTerminate(context);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see android.app.Application#onLowMemory()
-     */
-    @Override
     public void onLowMemory() {
-        super.onLowMemory();
         BitmapManager.clear("on Low Memory: ");
         ByteBufferManager.clear("on Low Memory: ");
     }
@@ -101,7 +80,7 @@ public class EBookDroidApp extends BaseDroidApp implements IAppSettingsChangeLis
     }
 
     @Override
-    public void onLibSettingsChanged(final LibSettings oldSettings, final LibSettings newSettings, final Diff diff) {
+    public void onLibSettingsChanged(final LibSettings oldSettings, final LibSettings newSettings, final LibSettings.Diff diff) {
         if (diff.isCacheLocationChanged()) {
             CacheManager.setCacheLocation(newSettings.cacheLocation, !diff.isFirstTime());
         }
@@ -131,8 +110,7 @@ public class EBookDroidApp extends BaseDroidApp implements IAppSettingsChangeLis
     /**
      * Preallocate heap.
      *
-     * @param size
-     *            the size in megabytes
+     * @param size the size in megabytes
      * @return the object
      */
     private static Object preallocateHeap(final int size) {
@@ -158,5 +136,4 @@ public class EBookDroidApp extends BaseDroidApp implements IAppSettingsChangeLis
         Log.i(APP_NAME, "Heap preallocation failed");
         return null;
     }
-
 }

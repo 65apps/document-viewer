@@ -1,6 +1,6 @@
 package org.ebookdroid.ui.settings;
 
-import org.ebookdroid.EBookDroidApp;
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.common.settings.AppSettings;
 import org.ebookdroid.common.settings.SettingsManager;
@@ -20,7 +20,7 @@ public class SettingsActivity extends BaseSettingsActivity {
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        EBookDroidApp.initFonts();
+        EBookDroid.initFonts();
 
         final Uri uri = getIntent().getData();
         if (uri != null) {

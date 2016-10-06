@@ -1,6 +1,7 @@
 package org.ebookdroid.opds;
 
 import org.ebookdroid.CodecType;
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.common.settings.OpdsSettings;
 import org.ebookdroid.opds.exceptions.AuthorizationRequiredException;
@@ -34,7 +35,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.message.BasicHeader;
-import org.emdev.BaseDroidApp;
 import org.emdev.common.archives.zip.ZipArchive;
 import org.emdev.common.archives.zip.ZipArchiveEntry;
 import org.emdev.common.cache.CacheManager;
@@ -54,7 +54,7 @@ public class OPDSClient extends BaseHttpClient {
     private final IEntryBuilder builder;
 
     public OPDSClient(final IEntryBuilder builder) {
-        super(BaseDroidApp.APP_PACKAGE + " " + BaseDroidApp.APP_VERSION_NAME);
+        super(EBookDroid.APP_PACKAGE + " " + EBookDroid.APP_VERSION_NAME);
         this.builder = builder;
     }
 

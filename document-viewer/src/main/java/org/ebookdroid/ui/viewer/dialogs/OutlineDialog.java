@@ -1,11 +1,5 @@
 package org.ebookdroid.ui.viewer.dialogs;
 
-import org.sufficientlysecure.viewer.R;
-import org.ebookdroid.common.settings.books.BookSettings;
-import org.ebookdroid.core.codec.OutlineLink;
-import org.ebookdroid.ui.viewer.IActivityController;
-import org.ebookdroid.ui.viewer.adapters.OutlineAdapter;
-
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
@@ -13,10 +7,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import java.util.List;
-
+import org.ebookdroid.common.settings.books.BookSettings;
+import org.ebookdroid.core.codec.OutlineLink;
+import org.ebookdroid.ui.viewer.IActivityController;
+import org.ebookdroid.ui.viewer.adapters.OutlineAdapter;
 import org.emdev.ui.actions.ActionController;
+import org.emdev.ui.actions.Actions;
 import org.emdev.utils.LayoutUtils;
+import org.sufficientlysecure.viewer.R;
+
+import java.util.List;
 
 public class OutlineDialog extends Dialog implements OnItemClickListener {
 
@@ -75,6 +75,6 @@ public class OutlineDialog extends Dialog implements OnItemClickListener {
     @Override
     public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
         this.dismiss();
-        actions.getOrCreateAction(R.id.actions_gotoOutlineItem).onItemClick(parent, view, position, id);
+        actions.getOrCreateAction(Actions.actions_gotoOutlineItem).onItemClick(parent, view, position, id);
     }
 }

@@ -1,6 +1,6 @@
 package org.ebookdroid.common.settings.types;
 
-import org.ebookdroid.EBookDroidApp;
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 
 import org.emdev.utils.enums.ResourceConstant;
@@ -32,7 +32,7 @@ public enum FontSize implements ResourceConstant {
     private final String resValue;
     
     private FontSize(final int resId, final float factor) {
-        this.resValue = EBookDroidApp.context.getString(resId);
+        this.resValue = EBookDroid.context.getString(resId);
         this.factor = factor;
     }
 

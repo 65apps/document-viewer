@@ -171,7 +171,7 @@ public abstract class AbstractComponentController<ManagedComponent> implements I
         return result;
     }
 
-    @ActionMethod(ids = R.id.actions_no_action)
+    @ActionMethod(ids = Actions.actions_no_action)
     public void noAction(final ActionEx action) {
     }
 

@@ -1,5 +1,6 @@
 package org.ebookdroid.common.notifications;
 
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 
 import android.annotation.TargetApi;
@@ -7,15 +8,13 @@ import android.app.Notification;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
-import org.emdev.BaseDroidApp;
-
 @TargetApi(4)
 class CompatibilityNotificationManager extends AbstractNotificationManager {
 
     @Override
     public int notify(final CharSequence title, final CharSequence message, final Intent intent) {
         try {
-            final NotificationCompat.Builder nb = new NotificationCompat.Builder(BaseDroidApp.context);
+            final NotificationCompat.Builder nb = new NotificationCompat.Builder(EBookDroid.context);
 
             nb.setSmallIcon(R.drawable.application_icon);
             nb.setAutoCancel(true);

@@ -1,5 +1,6 @@
 package org.ebookdroid.core;
 
+import org.emdev.ui.actions.Actions;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.common.keysbinding.KeyBindingsManager;
 import org.ebookdroid.common.settings.AppSettings;
@@ -97,12 +98,12 @@ public abstract class AbstractViewController extends AbstractComponentController
 
         this.pageToGo = base.getBookSettings().getCurrentPage();
 
-        createAction(R.id.actions_verticalConfigScrollUp, new Constant("direction", -1));
-        createAction(R.id.actions_verticalConfigScrollDown, new Constant("direction", +1));
-        createAction(R.id.actions_leftTopCorner, new Constant("offsetX", 0), new Constant("offsetY", 0));
-        createAction(R.id.actions_leftBottomCorner, new Constant("offsetX", 0), new Constant("offsetY", 1));
-        createAction(R.id.actions_rightTopCorner, new Constant("offsetX", 1), new Constant("offsetY", 0));
-        createAction(R.id.actions_rightBottomCorner, new Constant("offsetX", 1), new Constant("offsetY", 1));
+        createAction(Actions.actions_verticalConfigScrollUp, new Constant("direction", -1));
+        createAction(Actions.actions_verticalConfigScrollDown, new Constant("direction", +1));
+        createAction(Actions.actions_leftTopCorner, new Constant("offsetX", 0), new Constant("offsetY", 0));
+        createAction(Actions.actions_leftBottomCorner, new Constant("offsetX", 0), new Constant("offsetY", 1));
+        createAction(Actions.actions_rightTopCorner, new Constant("offsetX", 1), new Constant("offsetY", 0));
+        createAction(Actions.actions_rightBottomCorner, new Constant("offsetX", 1), new Constant("offsetY", 1));
     }
 
     protected List<IGestureDetector> getGestureDetectors() {
@@ -225,7 +226,7 @@ public abstract class AbstractViewController extends AbstractComponentController
         }
     }
 
-    @ActionMethod(ids = R.id.actions_quickZoom)
+    @ActionMethod(ids = Actions.actions_quickZoom)
     public final void quickZoom(final ActionEx action) {
         if (inZoom.get()) {
             return;
@@ -240,7 +241,7 @@ public abstract class AbstractViewController extends AbstractComponentController
         base.getZoomModel().scaleAndCommitZoom(zoomFactor);
     }
 
-    @ActionMethod(ids = R.id.actions_zoomToColumn)
+    @ActionMethod(ids = Actions.actions_zoomToColumn)
     public final void zoomToColumn(final ActionEx action) {
         if (inZoom.get()) {
             return;
@@ -323,8 +324,8 @@ public abstract class AbstractViewController extends AbstractComponentController
         vs.release();
     }
 
-    @ActionMethod(ids = { R.id.actions_leftTopCorner, R.id.actions_leftBottomCorner, R.id.actions_rightTopCorner,
-            R.id.actions_rightBottomCorner })
+    @ActionMethod(ids = { Actions.actions_leftTopCorner, Actions.actions_leftBottomCorner, Actions.actions_rightTopCorner,
+            Actions.actions_rightBottomCorner })
     public void scrollToCorner(final ActionEx action) {
         final Integer offX = action.getParameter("offsetX");
         final Integer offY = action.getParameter("offsetY");
@@ -534,7 +535,7 @@ public abstract class AbstractViewController extends AbstractComponentController
         getView().redrawView(viewState);
     }
 
-    @ActionMethod(ids = { R.id.actions_verticalConfigScrollUp, R.id.actions_verticalConfigScrollDown })
+    @ActionMethod(ids = {Actions.actions_verticalConfigScrollUp, Actions.actions_verticalConfigScrollDown })
     public final void verticalConfigScroll(final ActionEx action) {
         final Integer direction = action.getParameter("direction");
         verticalConfigScroll(direction);

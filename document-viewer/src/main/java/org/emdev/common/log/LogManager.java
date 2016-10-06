@@ -7,9 +7,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 
-import java.io.File;
+import org.ebookdroid.app.EBookDroid;
 
-import org.emdev.BaseDroidApp;
+import java.io.File;
 
 public final class LogManager {
 
@@ -23,13 +23,13 @@ public final class LogManager {
     }
 
     public static void init(final Context context) {
-        LOG_STORAGE = new File(BaseDroidApp.APP_STORAGE, "logs");
+        LOG_STORAGE = new File(EBookDroid.APP_STORAGE, "logs");
         LOG_STORAGE.mkdirs();
 
         final boolean debugEnabled = isDebugEnabledByDefault(context);
-        Log.i(BaseDroidApp.APP_NAME, "Debug logging " + (debugEnabled ? "enabled" : "disabled") + " by default");
+        Log.i(EBookDroid.APP_NAME, "Debug logging " + (debugEnabled ? "enabled" : "disabled") + " by default");
 
-        root = new LogContext(BaseDroidApp.APP_NAME, debugEnabled);
+        root = new LogContext(EBookDroid.APP_NAME, debugEnabled);
         handler = new EmergencyHandler();
     }
 
@@ -48,7 +48,7 @@ public final class LogManager {
 
     public static LogContext root() {
         if (root == null) {
-            root = new LogContext(BaseDroidApp.APP_PACKAGE, false);
+            root = new LogContext(EBookDroid.APP_PACKAGE, false);
         }
         return root;
     }

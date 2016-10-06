@@ -1,6 +1,6 @@
 package org.ebookdroid.ui.library.dialogs;
 
-import org.ebookdroid.EBookDroidApp;
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.ui.library.adapters.BrowserAdapter;
 
@@ -109,16 +109,16 @@ public class FolderDlg implements AdapterView.OnItemClickListener {
         LayoutUtils.maximizeWindow(dlg.getWindow());
     }
 
-    @ActionMethod(ids = R.id.browserhome)
+    @ActionMethod(ids = {/*R.id.browserhome*/})
     public void goHome(final ActionEx action) {
-        if (EBookDroidApp.EXT_STORAGE.exists()) {
-            setCurrentDir(EBookDroidApp.EXT_STORAGE);
+        if (EBookDroid.EXT_STORAGE.exists()) {
+            setCurrentDir(EBookDroid.EXT_STORAGE);
         } else {
             setCurrentDir(new File("/"));
         }
     }
 
-    @ActionMethod(ids = R.id.browserupfolder)
+    @ActionMethod(ids = {/*R.id.browserupfolder*/})
     public void goUp(final ActionEx action) {
         final File dir = adapter.getCurrentDirectory();
         final File parent = dir != null ? dir.getParentFile() : null;

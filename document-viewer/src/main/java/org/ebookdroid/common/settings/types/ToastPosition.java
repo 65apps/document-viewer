@@ -3,8 +3,7 @@ package org.ebookdroid.common.settings.types;
 import static android.view.Gravity.*;
 import static org.sufficientlysecure.viewer.R.string.*;
 
-import org.ebookdroid.EBookDroidApp;
-
+import org.ebookdroid.app.EBookDroid;
 import org.emdev.utils.enums.ResourceConstant;
 
 public enum ToastPosition implements ResourceConstant {
@@ -38,7 +37,7 @@ public enum ToastPosition implements ResourceConstant {
     private final String resValue;
 
     private ToastPosition(int resId, int position) {
-        this.resValue = EBookDroidApp.context.getString(resId);
+        this.resValue = EBookDroid.context.getString(resId);
         this.position = position;
     }
 

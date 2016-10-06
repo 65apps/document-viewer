@@ -9,6 +9,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.Window;
 
+import org.ebookdroid.app.EBookDroid;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,8 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.emdev.BaseDroidApp;
 
 @TargetApi(11)
 public class UIManager3x implements IUIManager {
@@ -177,7 +177,7 @@ public class UIManager3x implements IUIManager {
     }
 
     protected boolean isSystemUIRunning() {
-        final Context ctx = BaseDroidApp.context;
+        final Context ctx = EBookDroid.context;
         final ActivityManager am = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
         final List<RunningServiceInfo> rsiList = am.getRunningServices(1000);
 

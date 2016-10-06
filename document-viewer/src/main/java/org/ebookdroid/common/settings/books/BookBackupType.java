@@ -1,8 +1,8 @@
 package org.ebookdroid.common.settings.books;
 
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 
-import org.emdev.BaseDroidApp;
 import org.emdev.utils.enums.ResourceConstant;
 
 public enum BookBackupType implements ResourceConstant {
@@ -23,7 +23,7 @@ public enum BookBackupType implements ResourceConstant {
     public final String resValue;
 
     private BookBackupType(final int resId) {
-        this.resValue = BaseDroidApp.context.getString(resId);
+        this.resValue = EBookDroid.context.getString(resId);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.ebookdroid.common.keysbinding;
 
+import org.emdev.ui.actions.Actions;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.common.settings.AppSettings;
 
@@ -39,8 +40,8 @@ public class KeyBindingsManager {
         }
 
         if (!fromJSON) {
-            addAction(R.id.actions_verticalConfigScrollUp, KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_VOLUME_UP);
-            addAction(R.id.actions_verticalConfigScrollDown, KeyEvent.KEYCODE_DPAD_DOWN, KeyEvent.KEYCODE_VOLUME_DOWN);
+            addAction(Actions.actions_verticalConfigScrollUp, KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_VOLUME_UP);
+            addAction(Actions.actions_verticalConfigScrollDown, KeyEvent.KEYCODE_DPAD_DOWN, KeyEvent.KEYCODE_VOLUME_DOWN);
 
             persist();
         }

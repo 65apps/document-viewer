@@ -1,6 +1,6 @@
 package org.ebookdroid.common.settings.types;
 
-import org.ebookdroid.EBookDroidApp;
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.common.settings.books.BookSettings;
 import org.ebookdroid.core.VScrollController;
@@ -34,7 +34,7 @@ public enum DocumentViewMode implements ResourceConstant {
 
     private DocumentViewMode(final int resId, final PageAlign pageAlign,
             final Class<? extends IViewController> clazz) {
-        this.resValue = EBookDroidApp.context.getString(resId);
+        this.resValue = EBookDroid.context.getString(resId);
         this.pageAlign = pageAlign;
         try {
             this.c = clazz.getConstructor(IActivityController.class);

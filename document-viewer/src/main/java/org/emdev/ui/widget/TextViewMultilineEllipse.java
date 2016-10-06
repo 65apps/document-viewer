@@ -93,7 +93,7 @@ public class TextViewMultilineEllipse extends View {
         // can instead call a.getColor() and pass that to setTextColor().
         setTextColor(a.getColorStateList(R.styleable.org_emdev_ui_widget_TextViewMultilineEllipse_textColor));
 
-        int textSize = a.getDimensionPixelOffset(R.styleable.org_emdev_ui_widget_TextViewMultilineEllipse_textSize, 0);
+        int textSize = a.getDimensionPixelOffset(R.styleable.org_emdev_ui_widget_TextViewMultilineEllipse_textSizeM, 0);
         if (textSize > 0) {
             setTextSize(textSize);
         }

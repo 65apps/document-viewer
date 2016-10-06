@@ -1,1 +1,1 @@
-include ':document-viewer'
+include ':document-viewer', ':myapplication'

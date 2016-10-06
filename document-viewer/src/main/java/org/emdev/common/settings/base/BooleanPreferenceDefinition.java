@@ -3,7 +3,7 @@ package org.emdev.common.settings.base;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import org.emdev.BaseDroidApp;
+import org.ebookdroid.app.EBookDroid;
 import org.json.JSONObject;
 
 public class BooleanPreferenceDefinition extends BasePreferenceDefinition<Boolean> {
@@ -12,7 +12,7 @@ public class BooleanPreferenceDefinition extends BasePreferenceDefinition<Boolea
 
     public BooleanPreferenceDefinition(final int keyRes, final int defValRef) {
         super(keyRes);
-        defValue = Boolean.parseBoolean(BaseDroidApp.context.getString(defValRef));
+        defValue = Boolean.parseBoolean(EBookDroid.context.getString(defValRef));
     }
 
     @Override

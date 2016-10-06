@@ -1,5 +1,6 @@
 package org.ebookdroid.common.cache;
 
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.common.settings.types.CacheLocation;
 
@@ -10,7 +11,6 @@ import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.emdev.BaseDroidApp;
 import org.emdev.common.filesystem.FilePrefixFilter;
 import org.emdev.ui.progress.IProgressIndicator;
 import org.emdev.ui.tasks.BaseAsyncTask;
@@ -28,8 +28,8 @@ public class CacheManager extends org.emdev.common.cache.CacheManager {
     public static void setCacheLocation(final CacheLocation cacheLocation, final boolean moveFiles) {
         File cacheDir = s_context.getFilesDir();
         if (cacheLocation == CacheLocation.Custom) {
-            if (!BaseDroidApp.APP_STORAGE.equals(cacheDir)) {
-                cacheDir = new File(BaseDroidApp.APP_STORAGE, "files");
+            if (!EBookDroid.APP_STORAGE.equals(cacheDir)) {
+                cacheDir = new File(EBookDroid.APP_STORAGE, "files");
             }
         }
         if (setCacheDir(cacheDir, moveFiles, null)) {
@@ -40,8 +40,8 @@ public class CacheManager extends org.emdev.common.cache.CacheManager {
     public static void moveCacheLocation(final Context context, final CacheLocation cacheLocation) {
         File cacheDir = s_context.getFilesDir();
         if (cacheLocation == CacheLocation.Custom) {
-            if (!BaseDroidApp.APP_STORAGE.equals(cacheDir)) {
-                cacheDir = new File(BaseDroidApp.APP_STORAGE, "files");
+            if (!EBookDroid.APP_STORAGE.equals(cacheDir)) {
+                cacheDir = new File(EBookDroid.APP_STORAGE, "files");
             }
         }
 

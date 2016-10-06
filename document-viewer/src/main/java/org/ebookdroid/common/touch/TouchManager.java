@@ -1,5 +1,6 @@
 package org.ebookdroid.common.touch;
 
+import org.emdev.ui.actions.Actions;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.common.settings.AppSettings;
 
@@ -57,27 +58,27 @@ public class TouchManager {
             final TouchProfile def = addProfile(DEFAULT_PROFILE);
             {
                 final Region r = def.addRegion(0, 0, 100, 100);
-                r.setAction(Touch.DoubleTap, R.id.actions_openOptionsMenu, true);
+                r.setAction(Touch.DoubleTap, Actions.actions_openOptionsMenu, true);
             }
             {
                 final Region r = def.addRegion(80, 0, 100, 20);
-                r.setAction(Touch.DoubleTap, R.id.mainmenu_close, true);
+                r.setAction(Touch.DoubleTap, Actions.actions_mainmenu_close, true);
             }
             {
                 final Region r = def.addRegion(0, 0, 100, 10);
-                r.setAction(Touch.SingleTap, R.id.actions_verticalConfigScrollUp, true);
+                r.setAction(Touch.SingleTap, Actions.actions_verticalConfigScrollUp, true);
             }
             {
                 final Region r = def.addRegion(0, 90, 100, 100);
-                r.setAction(Touch.SingleTap, R.id.actions_verticalConfigScrollDown, true);
+                r.setAction(Touch.SingleTap, Actions.actions_verticalConfigScrollDown, true);
             }
             {
                 final Region r = def.addRegion(0, 0, 10, 100); // left edge
-                r.setAction(Touch.SingleTap, R.id.actions_verticalConfigScrollUp, true);
+                r.setAction(Touch.SingleTap, Actions.actions_verticalConfigScrollUp, true);
             }
             {
                 final Region r = def.addRegion(90, 0, 100, 100); // right edge
-                r.setAction(Touch.SingleTap, R.id.actions_verticalConfigScrollDown, true);
+                r.setAction(Touch.SingleTap, Actions.actions_verticalConfigScrollDown, true);
             }
 
             persist();

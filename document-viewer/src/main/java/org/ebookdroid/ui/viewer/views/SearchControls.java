@@ -1,5 +1,6 @@
 package org.ebookdroid.ui.viewer.views;
 
+import org.emdev.ui.actions.Actions;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.ui.viewer.ViewerActivity;
 
@@ -30,8 +31,8 @@ public class SearchControls extends LinearLayout {
         m_nextButton = (ImageButton) findViewById(R.id.search_controls_next);
         m_edit = (EditText) findViewById(R.id.search_controls_edit);
 
-        ActionEx forwardSearch = parent.getController().getOrCreateAction(R.id.actions_doSearch);
-        ActionEx backwardSearch = parent.getController().getOrCreateAction(R.id.actions_doSearchBack);
+        ActionEx forwardSearch = parent.getController().getOrCreateAction(Actions.actions_doSearch);
+        ActionEx backwardSearch = parent.getController().getOrCreateAction(Actions.actions_doSearchBack);
 
         forwardSearch.addParameter(new EditableValue("input", m_edit)).addParameter(new Constant("forward", "true"));
         backwardSearch.addParameter(new EditableValue("input", m_edit)).addParameter(new Constant("forward", "false"));

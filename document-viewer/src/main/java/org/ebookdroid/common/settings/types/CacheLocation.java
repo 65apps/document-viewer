@@ -1,6 +1,6 @@
 package org.ebookdroid.common.settings.types;
 
-import org.ebookdroid.EBookDroidApp;
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 
 import org.emdev.utils.enums.ResourceConstant;
@@ -19,7 +19,7 @@ public enum CacheLocation implements ResourceConstant {
     private final String resValue;
 
     private CacheLocation(final int resId) {
-        this.resValue = EBookDroidApp.context.getString(resId);
+        this.resValue = EBookDroid.context.getString(resId);
     }
 
     public String getResValue() {

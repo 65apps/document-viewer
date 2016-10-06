@@ -1,8 +1,8 @@
 package org.ebookdroid.common.settings.types;
 
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 
-import org.emdev.BaseDroidApp;
 import org.emdev.utils.enums.ResourceConstant;
 
 public enum BookRotationType implements ResourceConstant {
@@ -28,7 +28,7 @@ public enum BookRotationType implements ResourceConstant {
     private final RotationType orientation;
 
     private BookRotationType(final int resId, final RotationType orientation) {
-        this.resValue = BaseDroidApp.context.getString(resId);
+        this.resValue = EBookDroid.context.getString(resId);
         this.orientation = orientation;
     }
 

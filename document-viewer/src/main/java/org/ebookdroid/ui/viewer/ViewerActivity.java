@@ -1,21 +1,5 @@
 package org.ebookdroid.ui.viewer;
 
-import org.ebookdroid.common.settings.types.DocumentViewMode;
-import org.sufficientlysecure.viewer.R;
-import org.ebookdroid.common.settings.AppSettings;
-import org.ebookdroid.common.settings.books.BookSettings;
-import org.ebookdroid.common.settings.books.Bookmark;
-import org.ebookdroid.common.settings.types.BookRotationType;
-import org.ebookdroid.common.settings.types.ToastPosition;
-import org.ebookdroid.common.touch.TouchManagerView;
-import org.ebookdroid.core.DecodeService;
-import org.ebookdroid.core.codec.CodecFeatures;
-import org.ebookdroid.ui.viewer.stubs.ViewStub;
-import org.ebookdroid.ui.viewer.viewers.GLView;
-import org.ebookdroid.ui.viewer.views.ManualCropView;
-import org.ebookdroid.ui.viewer.views.PageViewZoomControls;
-import org.ebookdroid.ui.viewer.views.SearchControls;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -31,14 +15,30 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import org.ebookdroid.common.settings.AppSettings;
+import org.ebookdroid.common.settings.books.BookSettings;
+import org.ebookdroid.common.settings.books.Bookmark;
+import org.ebookdroid.common.settings.types.BookRotationType;
+import org.ebookdroid.common.settings.types.DocumentViewMode;
+import org.ebookdroid.common.settings.types.ToastPosition;
+import org.ebookdroid.common.touch.TouchManagerView;
+import org.ebookdroid.core.DecodeService;
+import org.ebookdroid.core.codec.CodecFeatures;
+import org.ebookdroid.ui.viewer.stubs.ViewStub;
+import org.ebookdroid.ui.viewer.viewers.GLView;
+import org.ebookdroid.ui.viewer.views.ManualCropView;
+import org.ebookdroid.ui.viewer.views.PageViewZoomControls;
+import org.ebookdroid.ui.viewer.views.SearchControls;
 import org.emdev.common.android.AndroidVersion;
 import org.emdev.ui.AbstractActionActivity;
 import org.emdev.ui.actions.ActionDialogBuilder;
 import org.emdev.ui.actions.ActionMenuHelper;
+import org.emdev.ui.actions.Actions;
 import org.emdev.ui.gl.GLConfiguration;
 import org.emdev.ui.uimanager.IUIManager;
 import org.emdev.utils.LayoutUtils;
 import org.emdev.utils.LengthUtils;
+import org.sufficientlysecure.viewer.R;
 
 public class ViewerActivity extends AbstractActionActivity<ViewerActivity, ViewerActivityController> {
 
@@ -124,13 +124,13 @@ public class ViewerActivity extends AbstractActionActivity<ViewerActivity, Viewe
             final ActionDialogBuilder builder = new ActionDialogBuilder(this, getController());
             builder.setTitle(R.string.error_dlg_title);
             builder.setMessage(th.getMessage());
-            builder.setPositiveButton(R.string.error_close, R.id.mainmenu_close);
+            builder.setPositiveButton(R.string.error_close, Actions.actions_mainmenu_close);
             builder.show();
         }
 
         setContentView(frameLayout);
 
-        if (!AndroidVersion.lessThan3x) {
+        if (getActionBar() != null && !AndroidVersion.lessThan3x) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
@@ -346,7 +346,7 @@ public class ViewerActivity extends AbstractActionActivity<ViewerActivity, Viewe
         final MenuItem navMenu = menu.findItem(R.id.mainmenu_nav_menu);
         if (navMenu != null) {
             final SubMenu subMenu = navMenu.getSubMenu();
-            subMenu.removeGroup(R.id.actions_goToBookmarkGroup);
+            subMenu.removeGroup(Actions.actions_goToBookmarkGroup);
             if (AppSettings.current().showBookmarksInMenu && LengthUtils.isNotEmpty(bs.bookmarks)) {
                 for (final Bookmark b : bs.bookmarks) {
                     addBookmarkMenuItem(subMenu, b);
@@ -357,7 +357,7 @@ public class ViewerActivity extends AbstractActionActivity<ViewerActivity, Viewe
     }
 
     protected void addBookmarkMenuItem(final Menu menu, final Bookmark b) {
-        final MenuItem bmi = menu.add(R.id.actions_goToBookmarkGroup, R.id.actions_goToBookmark, Menu.NONE, b.name);
+        final MenuItem bmi = menu.add(Actions.actions_goToBookmarkGroup, Actions.actions_goToBookmark, Menu.NONE, b.name);
         bmi.setIcon(R.drawable.viewer_menu_bookmark);
         ActionMenuHelper.setMenuItemExtra(bmi, "bookmark", b);
     }
@@ -398,7 +398,7 @@ public class ViewerActivity extends AbstractActionActivity<ViewerActivity, Viewe
         view.checkFullScreenMode();
         if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_MENU) {
             if (!hasNormalMenu()) {
-                getController().getOrCreateAction(R.id.actions_openOptionsMenu).run();
+                getController().getOrCreateAction(Actions.actions_openOptionsMenu).run();
                 return true;
             }
         }

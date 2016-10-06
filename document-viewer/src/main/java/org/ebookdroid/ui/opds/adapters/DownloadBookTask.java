@@ -1,5 +1,6 @@
 package org.ebookdroid.ui.opds.adapters;
 
+import org.emdev.ui.actions.Actions;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.opds.exceptions.AuthorizationRequiredException;
 import org.ebookdroid.opds.exceptions.OPDSException;
@@ -42,10 +43,10 @@ final class DownloadBookTask extends BaseFileAsyncTask<Object, DownloadBookResul
             if (result.error instanceof AuthorizationRequiredException) {
                 adapter.showAuthDlg(result);
             } else if (result.error instanceof OPDSException) {
-                adapter.showErrorDlg(R.string.opds_retry_download, R.id.actions_retryDownloadBook, result,
+                adapter.showErrorDlg(R.string.opds_retry_download, Actions.actions_retryDownloadBook, result,
                         (OPDSException) result.error);
             } else if (result.error != null) {
-                adapter.showErrorDlg(R.string.opds_retry_download, R.id.actions_retryDownloadBook, result,
+                adapter.showErrorDlg(R.string.opds_retry_download, Actions.actions_retryDownloadBook, result,
                         new OPDSException(result.error));
             }
         }

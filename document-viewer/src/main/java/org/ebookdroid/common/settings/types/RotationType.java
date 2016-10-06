@@ -1,6 +1,6 @@
 package org.ebookdroid.common.settings.types;
 
-import org.ebookdroid.EBookDroidApp;
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 
 import android.content.pm.ActivityInfo;
@@ -66,7 +66,7 @@ public enum RotationType implements ResourceConstant {
     private final int version;
 
     private RotationType(final int resId, final int orientation, final int version) {
-        this.resValue = EBookDroidApp.context.getString(resId);
+        this.resValue = EBookDroid.context.getString(resId);
         this.orientation = orientation;
         this.version = version;
     }

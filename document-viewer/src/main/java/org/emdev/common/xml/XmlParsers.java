@@ -1,8 +1,8 @@
 package org.emdev.common.xml;
 
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 
-import org.emdev.BaseDroidApp;
 import org.emdev.utils.enums.ResourceConstant;
 
 public enum XmlParsers implements ResourceConstant {
@@ -19,7 +19,7 @@ public enum XmlParsers implements ResourceConstant {
     private final String resValue;
 
     private XmlParsers(final int resId) {
-        this.resValue = BaseDroidApp.context.getString(resId);
+        this.resValue = EBookDroid.context.getString(resId);
     }
 
     @Override

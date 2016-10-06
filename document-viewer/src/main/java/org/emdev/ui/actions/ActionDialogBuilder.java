@@ -1,7 +1,5 @@
 package org.emdev.ui.actions;
 
-import org.sufficientlysecure.viewer.R;
-
 import android.app.AlertDialog;
 import android.content.Context;
 
@@ -37,12 +35,12 @@ public class ActionDialogBuilder extends AlertDialog.Builder {
     }
 
     public ActionDialogBuilder setNegativeButton() {
-        super.setNegativeButton(android.R.string.cancel, actions.getOrCreateAction(R.id.actions_no_action));
+        super.setNegativeButton(android.R.string.cancel, actions.getOrCreateAction(Actions.actions_no_action));
         return this;
     }
 
     public ActionDialogBuilder setNegativeButton(int resId) {
-        super.setNegativeButton(resId, actions.getOrCreateAction(R.id.actions_no_action));
+        super.setNegativeButton(resId, actions.getOrCreateAction(Actions.actions_no_action));
         return this;
     }
 

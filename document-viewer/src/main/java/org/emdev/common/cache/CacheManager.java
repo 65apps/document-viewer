@@ -28,7 +28,7 @@ public class CacheManager {
 
     public static void init(final Context context) {
         s_context = context;
-        s_cacheDir = context.getFilesDir();
+        s_cacheDir = context.getExternalCacheDir();
         LCTX.i("Default app cache dir: " + FileUtils.getAbsolutePath(s_cacheDir));
     }
 

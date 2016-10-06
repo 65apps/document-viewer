@@ -1,12 +1,5 @@
 package org.ebookdroid.ui.viewer.views;
 
-import org.sufficientlysecure.viewer.R;
-import org.ebookdroid.common.settings.types.PageAlign;
-import org.ebookdroid.core.EventCrop;
-import org.ebookdroid.core.Page;
-import org.ebookdroid.core.ViewState;
-import org.ebookdroid.ui.viewer.IActivityController;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -21,12 +14,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 
+import org.ebookdroid.common.settings.types.PageAlign;
+import org.ebookdroid.core.EventCrop;
+import org.ebookdroid.core.Page;
+import org.ebookdroid.core.ViewState;
+import org.ebookdroid.ui.viewer.IActivityController;
 import org.emdev.ui.actions.ActionController;
 import org.emdev.ui.actions.ActionDialogBuilder;
 import org.emdev.ui.actions.ActionEx;
 import org.emdev.ui.actions.ActionMethod;
+import org.emdev.ui.actions.Actions;
 import org.emdev.ui.actions.IActionController;
 import org.emdev.utils.MathUtils;
+import org.sufficientlysecure.viewer.R;
 
 public class ManualCropView extends View {
 
@@ -104,12 +104,12 @@ public class ManualCropView extends View {
 
         final ActionDialogBuilder builder = new ActionDialogBuilder(getContext(), controller);
         builder.setTitle(R.string.manual_cropping_title);
-        builder.setItems(R.array.list_crop_actions, controller.getOrCreateAction(R.id.actions_applyCrop));
+        builder.setItems(R.array.list_crop_actions, controller.getOrCreateAction(Actions.actions_applyCrop));
         builder.setNegativeButton(R.string.manual_cropping_back);
         builder.show();
     }
 
-    @ActionMethod(ids = R.id.actions_applyCrop)
+    @ActionMethod(ids = Actions.actions_applyCrop)
     public void onApply(final ActionEx action) {
         final Integer index = action.getParameter(IActionController.DIALOG_ITEM_PROPERTY);
         if (index == null) {

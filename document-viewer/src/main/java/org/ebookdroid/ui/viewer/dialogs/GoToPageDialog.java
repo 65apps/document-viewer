@@ -1,14 +1,5 @@
 package org.ebookdroid.ui.viewer.dialogs;
 
-import org.sufficientlysecure.viewer.R;
-import org.ebookdroid.common.settings.AppSettings;
-import org.ebookdroid.common.settings.books.BookSettings;
-import org.ebookdroid.common.settings.books.Bookmark;
-import org.ebookdroid.core.Page;
-import org.ebookdroid.core.models.DocumentModel;
-import org.ebookdroid.ui.viewer.IActivityController;
-import org.ebookdroid.ui.viewer.adapters.BookmarkAdapter;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.text.Editable;
@@ -20,9 +11,17 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 
+import org.ebookdroid.common.settings.AppSettings;
+import org.ebookdroid.common.settings.books.BookSettings;
+import org.ebookdroid.common.settings.books.Bookmark;
+import org.ebookdroid.core.Page;
+import org.ebookdroid.core.models.DocumentModel;
+import org.ebookdroid.ui.viewer.IActivityController;
+import org.ebookdroid.ui.viewer.adapters.BookmarkAdapter;
 import org.emdev.ui.actions.ActionDialogBuilder;
 import org.emdev.ui.actions.ActionEx;
 import org.emdev.ui.actions.ActionMethod;
+import org.emdev.ui.actions.Actions;
 import org.emdev.ui.actions.DialogController;
 import org.emdev.ui.actions.IActionController;
 import org.emdev.ui.actions.params.Constant;
@@ -31,6 +30,7 @@ import org.emdev.ui.uimanager.IUIManager;
 import org.emdev.ui.widget.IViewContainer;
 import org.emdev.ui.widget.SeekBarIncrementHandler;
 import org.emdev.utils.LayoutUtils;
+import org.sufficientlysecure.viewer.R;
 
 public class GoToPageDialog extends Dialog {
 
@@ -111,14 +111,14 @@ public class GoToPageDialog extends Dialog {
         IUIManager.instance.invalidateOptionsMenu(base.getManagedComponent());
     }
 
-    @ActionMethod(ids = R.id.goToButton)
+    @ActionMethod(ids = {/*R.id.goToButton*/})
     public void goToPageAndDismiss(final ActionEx action) {
         if (navigateToPage()) {
             dismiss();
         }
     }
 
-    @ActionMethod(ids = R.id.actions_setBookmarkedPage)
+    @ActionMethod(ids = {/*R.id.actions_setBookmarkedPage*/})
     public void updateControls(final ActionEx action) {
         final View view = action.getParameter(IActionController.VIEW_PROPERTY);
         final Bookmark bookmark = (Bookmark) view.getTag();
@@ -129,7 +129,7 @@ public class GoToPageDialog extends Dialog {
         current = bookmark;
     }
 
-    @ActionMethod(ids = R.id.actions_showDeleteBookmarkDlg)
+    @ActionMethod(ids = {/*R.id.actions_showDeleteBookmarkDlg*/})
     public void showDeleteBookmarkDlg(final ActionEx action) {
         final View view = action.getParameter(IActionController.VIEW_PROPERTY);
         final Bookmark bookmark = view != null ? (Bookmark) view.getTag() : null;
@@ -144,13 +144,13 @@ public class GoToPageDialog extends Dialog {
         builder.setNegativeButton().show();
     }
 
-    @ActionMethod(ids = R.id.actions_removeBookmark)
+    @ActionMethod(ids = {/*R.id.actions_removeBookmark*/})
     public void removeBookmark(final ActionEx action) {
         final Bookmark bookmark = action.getParameter("bookmark");
         adapter.remove(bookmark);
     }
 
-    @ActionMethod(ids = R.id.bookmark_add)
+    @ActionMethod(ids = {/*R.id.bookmark_add)
     public void showAddBookmarkDlg(final ActionEx action) {
         final Context context = getContext();
         final View view = action.getParameter(IActionController.VIEW_PROPERTY);
@@ -170,7 +170,7 @@ public class GoToPageDialog extends Dialog {
             input.setText(context.getString(R.string.text_page) + " " + (viewIndex + offset));
             input.selectAll();
 
-            builder.setPositiveButton(R.id.actions_addBookmark, new EditableValue("input", input), new Constant(
+            builder.setPositiveButton(Actions.actions_addBookmark, new EditableValue("input", input), new Constant(
                     "viewIndex", viewIndex));
         } else {
             builder.setTitle(R.string.menu_edit_bookmark);
@@ -178,14 +178,14 @@ public class GoToPageDialog extends Dialog {
             input.setText(bookmark.name);
             input.selectAll();
 
-            builder.setPositiveButton(R.id.actions_addBookmark, new EditableValue("input", input), new Constant(
+            builder.setPositiveButton(Actions.actions_addBookmark, new EditableValue("input", input), new Constant(
                     "bookmark", bookmark));
         }
 
         builder.setNegativeButton().show();
     }
 
-    @ActionMethod(ids = R.id.actions_addBookmark)
+    @ActionMethod(ids = Actions.actions_addBookmark)
     public void addBookmark(final ActionEx action) {
         final Editable value = action.getParameter("input");
         final Bookmark bookmark = action.getParameter("bookmark");
@@ -200,7 +200,7 @@ public class GoToPageDialog extends Dialog {
         }
     }
 
-    @ActionMethod(ids = { R.id.bookmark_remove_all, R.id.actions_showDeleteAllBookmarksDlg })
+    @ActionMethod(ids = { /*R.id.bookmark_remove_all, R.id.actions_showDeleteAllBookmarksDlg*/ })
     public void showDeleteAllBookmarksDlg(final ActionEx action) {
         if (!adapter.hasUserBookmarks()) {
             return;
@@ -213,7 +213,7 @@ public class GoToPageDialog extends Dialog {
         builder.setNegativeButton().show();
     }
 
-    @ActionMethod(ids = R.id.actions_deleteAllBookmarks)
+    @ActionMethod(ids = {/*R.id.actions_deleteAllBookmarks*/})
     public void deleteAllBookmarks(final ActionEx action) {
         adapter.clear();
     }

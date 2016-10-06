@@ -3,7 +3,7 @@ package org.emdev.common.settings.base;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import org.emdev.BaseDroidApp;
+import org.ebookdroid.app.EBookDroid;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,7 +13,7 @@ public class StringPreferenceDefinition extends BasePreferenceDefinition<String>
 
     public StringPreferenceDefinition(final int keyRes, final int defValRef) {
         super(keyRes);
-        defValue = defValRef != 0 ? BaseDroidApp.context.getString(defValRef) : "";
+        defValue = defValRef != 0 ? EBookDroid.context.getString(defValRef) : "";
     }
 
     @Override

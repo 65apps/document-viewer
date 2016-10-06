@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.emdev.BaseDroidApp;
+import org.ebookdroid.app.EBookDroid;
 import org.emdev.common.backup.BackupInfo.Type;
 import org.emdev.common.filesystem.CompositeFilter;
 import org.emdev.common.filesystem.FileExtensionFilter;
@@ -29,7 +29,7 @@ public class BackupManager {
 
     public static final LogContext LCTX = LogManager.root().lctx("BackupManager");
 
-    static File BACKUP_FOLDER = new File(BaseDroidApp.APP_STORAGE, "backups");
+    static File BACKUP_FOLDER = new File(EBookDroid.APP_STORAGE, "backups");
 
     private static final FileExtensionFilter BACKUP_FILTER = new FileExtensionFilter("jso");
 

@@ -1,5 +1,8 @@
 package org.ebookdroid.common.settings;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+
 import org.ebookdroid.common.settings.books.BookSettings;
 import org.ebookdroid.common.settings.definitions.AppPreferences;
 import org.ebookdroid.common.settings.definitions.BookPreferences;
@@ -11,10 +14,6 @@ import org.ebookdroid.common.settings.types.PageAlign;
 import org.ebookdroid.common.settings.types.RotationType;
 import org.ebookdroid.common.settings.types.ToastPosition;
 import org.ebookdroid.core.curl.PageAnimationType;
-
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-
 import org.emdev.common.backup.BackupManager;
 import org.emdev.common.backup.IBackupAgent;
 import org.emdev.common.settings.backup.SettingsBackupHelper;

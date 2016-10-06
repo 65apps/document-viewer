@@ -3,7 +3,7 @@ package org.emdev.common.settings.base;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import org.emdev.BaseDroidApp;
+import org.ebookdroid.app.EBookDroid;
 import org.emdev.common.log.LogContext;
 import org.emdev.common.log.LogManager;
 import org.json.JSONException;
@@ -16,7 +16,7 @@ public abstract class BasePreferenceDefinition<T> {
     public final String key;
 
     public BasePreferenceDefinition(final int keyRes) {
-        key = BaseDroidApp.context.getString(keyRes);
+        key = EBookDroid.context.getString(keyRes);
     }
 
     public BasePreferenceDefinition(final String key) {

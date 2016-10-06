@@ -1,8 +1,28 @@
 package org.ebookdroid.ui.viewer;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
+import android.graphics.PointF;
+import android.graphics.RectF;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import org.ebookdroid.CodecType;
-import org.ebookdroid.EBookDroidApp;
-import org.sufficientlysecure.viewer.R;
+import org.ebookdroid.app.BaseEBookDroid;
+import org.ebookdroid.app.EBookDroid;
 import org.ebookdroid.common.bitmaps.BitmapManager;
 import org.ebookdroid.common.bitmaps.ByteBufferManager;
 import org.ebookdroid.common.cache.CacheManager;
@@ -40,37 +60,6 @@ import org.ebookdroid.ui.viewer.stubs.ViewContollerStub;
 import org.ebookdroid.ui.viewer.views.ManualCropView;
 import org.ebookdroid.ui.viewer.views.SearchControls;
 import org.ebookdroid.ui.viewer.views.ViewEffects;
-
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.Intent;
-import android.graphics.PointF;
-import android.graphics.RectF;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
-import android.text.Editable;
-import android.text.InputType;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-
-import org.emdev.BaseDroidApp;
-import org.emdev.common.android.AndroidVersion;
 import org.emdev.common.backup.BackupManager;
 import org.emdev.common.content.ContentScheme;
 import org.emdev.common.filesystem.PathFromUri;
@@ -79,6 +68,7 @@ import org.emdev.ui.AbstractActivityController;
 import org.emdev.ui.actions.ActionDialogBuilder;
 import org.emdev.ui.actions.ActionEx;
 import org.emdev.ui.actions.ActionMethod;
+import org.emdev.ui.actions.Actions;
 import org.emdev.ui.actions.IActionController;
 import org.emdev.ui.actions.params.EditableValue;
 import org.emdev.ui.actions.params.EditableValue.PasswordEditable;
@@ -90,10 +80,21 @@ import org.emdev.ui.uimanager.IUIManager;
 import org.emdev.utils.FileUtils;
 import org.emdev.utils.LengthUtils;
 import org.emdev.utils.StringUtils;
+import org.sufficientlysecure.viewer.R;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ViewerActivityController extends AbstractActivityController<ViewerActivity> implements
         IActivityController, DecodingProgressListener, CurrentPageListener, IAppSettingsChangeListener,
         IBookSettingsChangeListener {
+    public static final String ARG_UNIQUE_BOOK_CODE = "unique_book_code";
 
     private final AtomicReference<IViewController> ctrl = new AtomicReference<IViewController>(ViewContollerStub.STUB);
 
@@ -106,6 +107,8 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
     private SearchModel searchModel;
 
     private String bookTitle;
+
+    private String uniqueBookCode;
 
     private ContentScheme scheme;
 
@@ -186,7 +189,7 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
                 DocumentViewMode.SINGLE_PAGE);
         createAction(R.id.mainmenu_zoom).putValue("view", activity.getZoomControls());
         createAction(R.id.mainmenu_search).putValue("view", activity.getSearchControls());
-        createAction(R.id.actions_toggleTouchManagerView).putValue("view", activity.getTouchView());
+        createAction(Actions.actions_toggleTouchManagerView).putValue("view", activity.getTouchView());
         createAction(R.id.mainmenu_force_portrait).putValue("mode", BookRotationType.PORTRAIT);
         createAction(R.id.mainmenu_force_landscape).putValue("mode", BookRotationType.LANDSCAPE);
 
@@ -215,6 +218,8 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         }
 
         bookTitle = scheme.getResourceName(activity.getContentResolver(), data);
+        uniqueBookCode = intent.getStringExtra(ARG_UNIQUE_BOOK_CODE);
+
         codecType = CodecType.getByUri(bookTitle);
 
         if (codecType == null) {
@@ -271,7 +276,7 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
     public void startDecoding(final String password) {
         final BookLoadTask loadTask = new BookLoadTask(password);
         if (codecType != null && codecType.useCustomFonts ) {
-            EBookDroidApp.checkInstalledFonts(getContext());
+            EBookDroid.checkInstalledFonts(getContext());
         }
         loadTask.run();
     }
@@ -306,8 +311,8 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
 
         final ActionDialogBuilder builder = new ActionDialogBuilder(getManagedComponent(), this);
         builder.setTitle(fileName).setMessage(promtId).setView(input);
-        builder.setPositiveButton(R.id.actions_redecodingWithPassword, new EditableValue("input", input));
-        builder.setNegativeButton(R.id.mainmenu_close).show();
+        builder.setPositiveButton(Actions.actions_redecodingWithPassword, new EditableValue("input", input));
+        builder.setNegativeButton(Actions.actions_mainmenu_close).show();
     }
 
     public void showErrorDlg(final int msgId, final Object... args) {
@@ -316,11 +321,11 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         builder.setTitle(R.string.error_dlg_title);
         builder.setMessage(msgId, args);
 
-        builder.setPositiveButton(R.string.error_close, R.id.mainmenu_close);
+        builder.setPositiveButton(R.string.error_close, Actions.actions_mainmenu_close);
         builder.show();
     }
 
-    @ActionMethod(ids = R.id.actions_redecodingWithPassword)
+    @ActionMethod(ids = Actions.actions_redecodingWithPassword)
     public void redecodingWithPassword(final ActionEx action) {
         final PasswordEditable value = action.getParameter("input");
         final String password = value.getPassword();
@@ -433,12 +438,12 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         }
     }
 
-    @ActionMethod(ids = R.id.actions_openOptionsMenu)
+    @ActionMethod(ids = Actions.actions_openOptionsMenu)
     public void openOptionsMenu(final ActionEx action) {
         IUIManager.instance.openOptionsMenu(getManagedComponent(), getManagedComponent().view.getView());
     }
 
-    @ActionMethod(ids = R.id.actions_gotoOutlineItem)
+    @ActionMethod(ids = Actions.actions_gotoOutlineItem)
     public void gotoOutlineItem(final ActionEx action) {
         final OutlineLink link = action.getParameter(IActionController.ADAPTER_SELECTED_ITEM_PROPERTY);
         if (link == null) {
@@ -476,7 +481,7 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         getDocumentController().goToPage(viewIndex, offsetX, offsetY);
     }
 
-    @ActionMethod(ids = R.id.mainmenu_outline)
+    @ActionMethod(ids = {/*R.id.mainmenu_outline*/})
     public void showOutline(final ActionEx action) {
         final List<OutlineLink> outline = documentModel.decodeService.getOutline();
         if ((outline != null) && (outline.size() > 0)) {
@@ -487,7 +492,7 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         }
     }
 
-    @ActionMethod(ids = { R.id.actions_doSearch, R.id.actions_doSearchBack })
+    @ActionMethod(ids = { Actions.actions_doSearch, Actions.actions_doSearchBack })
     public final void doSearch(final ActionEx action) {
         final Editable value = action.getParameter("input");
         final String newPattern = (value != null ? value.toString() : LengthUtils.toString(action.getParameter("text")));
@@ -498,28 +503,28 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         executor.execute(new SearchTask(), newPattern, oldPattern, (String) action.getParameter("forward"));
     }
 
-    @ActionMethod(ids = R.id.mainmenu_goto_page)
+    @ActionMethod(ids = {/*R.id.mainmenu_goto_page*/})
     public void showGotoDialog(final ActionEx action) {
         final GoToPageDialog dlg = new GoToPageDialog(this);
         dlg.show();
     }
 
-    @ActionMethod(ids = R.id.mainmenu_booksettings)
+    @ActionMethod(ids = {/*R.id.mainmenu_booksettings*/})
     public void showBookSettings(final ActionEx action) {
         SettingsUI.showBookSettings(getManagedComponent(), bookSettings.fileName);
     }
 
-    @ActionMethod(ids = R.id.mainmenu_settings)
+    @ActionMethod(ids = {/*R.id.mainmenu_settings*/})
     public void showAppSettings(final ActionEx action) {
         SettingsUI.showAppSettings(getManagedComponent(), bookSettings.fileName);
     }
 
-    @ActionMethod(ids = R.id.mainmenu_fullscreen)
+    @ActionMethod(ids = {/*R.id.mainmenu_fullscreen*/})
     public void toggleFullScreen(final ActionEx action) {
         AppSettings.toggleFullScreen();
     }
 
-    @ActionMethod(ids = { R.id.mainmenu_force_portrait, R.id.mainmenu_force_landscape })
+    @ActionMethod(ids = { /*R.id.mainmenu_force_portrait, R.id.mainmenu_force_landscape*/ })
     public void forceOrientation(final ActionEx action) {
         final BookRotationType mode = action.getParameter("mode");
         if (bookSettings.rotation == mode) {
@@ -529,22 +534,22 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         }
     }
 
-    @ActionMethod(ids = R.id.mainmenu_nightmode)
+    @ActionMethod(ids = {/*R.id.mainmenu_nightmode*/})
     public void toggleNightMode(final ActionEx action) {
         SettingsManager.toggleNightMode(bookSettings);
     }
 
-    @ActionMethod(ids = R.id.mainmenu_splitpages)
+    @ActionMethod(ids = {/*R.id.mainmenu_splitpages*/})
     public void toggleSplitPages(final ActionEx action) {
         SettingsManager.toggleSplitPages(bookSettings);
     }
 
-    @ActionMethod(ids = R.id.mainmenu_croppages)
+    @ActionMethod(ids = {/*R.id.mainmenu_croppages*/})
     public void toggleCropPages(final ActionEx action) {
         SettingsManager.toggleCropPages(bookSettings);
     }
 
-    @ActionMethod(ids = R.id.mainmenu_thumbnail)
+    @ActionMethod(ids = {/*R.id.mainmenu_thumbnail*/})
     public void setCurrentPageAsThumbnail(final ActionEx action) {
         final Page page = documentModel.getCurrentPageObject();
         if (page != null) {
@@ -552,12 +557,12 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         }
     }
 
-    @ActionMethod(ids = R.id.mainmenu_singlepage)
+    @ActionMethod(ids = {/*R.id.mainmenu_singlepage*/})
     public void toggleSinglePage(final ActionEx action) {
         SettingsManager.toggleSinglePage(bookSettings);
     }
 
-    @ActionMethod(ids = R.id.mainmenu_bookmark)
+    @ActionMethod(ids = {/*R.id.mainmenu_bookmark*/})
     public void showBookmarkDialog(final ActionEx action) {
         final int page = documentModel.getCurrentViewPageIndex();
 
@@ -573,11 +578,11 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
 
         final ActionDialogBuilder builder = new ActionDialogBuilder(getManagedComponent(), this);
         builder.setTitle(R.string.menu_add_bookmark).setMessage(message).setView(input);
-        builder.setPositiveButton(R.id.actions_addBookmark, new EditableValue("input", input));
+        builder.setPositiveButton(Actions.actions_addBookmark, new EditableValue("input", input));
         builder.setNegativeButton().show();
     }
 
-    @ActionMethod(ids = R.id.actions_addBookmark)
+    @ActionMethod(ids = Actions.actions_addBookmark)
     public void addBookmark(final ActionEx action) {
         final Editable value = action.getParameter("input");
         final String name = value.toString();
@@ -593,7 +598,7 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         }
     }
 
-    @ActionMethod(ids = R.id.actions_goToBookmark)
+    @ActionMethod(ids = Actions.actions_goToBookmark)
     public void goToBookmark(final ActionEx action) {
         final Bookmark b = action.getParameter("bookmark");
         if (b == null) {
@@ -605,7 +610,7 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         }
     }
 
-    @ActionMethod(ids = R.id.actions_keyBindings)
+    @ActionMethod(ids = {/*R.id.actions_keyBindings*/})
     public void showKeyBindingsDialog(final ActionEx action) {
         final KeyBindingsDialog dlg = new KeyBindingsDialog(this);
         dlg.show();
@@ -704,8 +709,8 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         return this;
     }
 
-    @ActionMethod(ids = { R.id.mainmenu_zoom, R.id.actions_toggleTouchManagerView, R.id.mainmenu_search,
-            R.id.mainmenu_crop })
+    @ActionMethod(ids = { /*R.id.mainmenu_zoom,*/ Actions.actions_toggleTouchManagerView/*, R.id.mainmenu_search,
+            R.id.mainmenu_crop*/ })
     public void toggleControls(final ActionEx action) {
         final View view = action.getParameter("view");
         final DocumentViewMode mode = action.getParameter("mode");
@@ -763,10 +768,10 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
 		    final ActionDialogBuilder builder = new ActionDialogBuilder(getManagedComponent(), this);
 		    builder.setTitle(R.string.confirmclose_title);
 		    builder.setMessage(R.string.confirmclose_msg);
-		    builder.setPositiveButton(R.id.mainmenu_close);
+		    builder.setPositiveButton(Actions.actions_mainmenu_close);
 		    builder.setNegativeButton().show();
 		} else {
-		    getOrCreateAction(R.id.mainmenu_close).run();
+		    getOrCreateAction(Actions.actions_mainmenu_close).run();
 		}
 	    }
 	    return true;
@@ -796,7 +801,7 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         return uri;
     }
 
-    @ActionMethod(ids = R.id.mainmenu_share)
+    @ActionMethod(ids = {/*R.id.mainmenu_share*/})
     public void shareDocument(final ActionEx action) {
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -806,7 +811,7 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         getManagedComponent().startActivity(Intent.createChooser(share, getManagedComponent().getString(R.string.menu_share)));
     }
 
-    @ActionMethod(ids = R.id.mainmenu_openwith)
+    @ActionMethod(ids = {/*R.id.mainmenu_openwith*/})
     public void openWith(final ActionEx action) {
         Intent openwith = new Intent(Intent.ACTION_VIEW);
         openwith.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -815,46 +820,48 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         getManagedComponent().startActivity(Intent.createChooser(openwith, getManagedComponent().getString(R.string.menu_openwith)));
     }
 
-    @ActionMethod(ids = R.id.mainmenu_close)
+    @ActionMethod(ids = {Actions.actions_mainmenu_close})
     public void closeActivity(final ActionEx action) {
         if (scheme == null || !scheme.promptForSave) {
-            getOrCreateAction(R.id.actions_doClose).run();
+            getOrCreateAction(Actions.actions_doClose).run();
             return;
         }
 
         // TODO: These two lines appear to do nothing, "save" value is never used.
-        getOrCreateAction(R.id.actions_doSaveAndClose).putValue("save", Boolean.TRUE);
-        getOrCreateAction(R.id.actions_doClose).putValue("save", Boolean.FALSE);
+        getOrCreateAction(Actions.actions_doSaveAndClose).putValue("save", Boolean.TRUE);
+        getOrCreateAction(Actions.actions_doClose).putValue("save", Boolean.FALSE);
 
         final ActionDialogBuilder builder = new ActionDialogBuilder(getManagedComponent(), this);
         builder.setTitle(R.string.confirmclose_title);
         builder.setMessage(R.string.confirmsave_msg);
-        builder.setPositiveButton(R.string.confirmsave_yes_btn, R.id.actions_showSaveDlg);
-        builder.setNegativeButton(R.string.confirmsave_no_btn, R.id.actions_doClose);
+//        builder.setPositiveButton(R.string.confirmsave_yes_btn, Actions.actions_showSaveDlg);
+        builder.setPositiveButton(R.string.confirmsave_yes_btn, Actions.actions_doSaveAndClose);
+        builder.setNegativeButton(R.string.confirmsave_no_btn, Actions.actions_doClose);
         builder.show();
     }
 
     @ActionMethod(ids = android.R.id.home)
     public void navigateUp(final ActionEx action) {
         // Set a flag so that R.id.actions_doClose actually performs an "up" action instead of just closing
-        getOrCreateAction(R.id.actions_doClose).putValue("up", Boolean.TRUE);
+        getOrCreateAction(Actions.actions_doClose).putValue("up", Boolean.FALSE);
 
         // Show the save prompt if needed, then runs R.id.actions_doClose
-        getOrCreateAction(R.id.mainmenu_close).run();
+        getOrCreateAction(Actions.actions_mainmenu_close).run();
     }
 
-    @ActionMethod(ids = R.id.actions_showSaveDlg)
+    @ActionMethod(ids = Actions.actions_showSaveDlg)
     public void showSaveDlg(final ActionEx action) {
         final FolderDlg dlg = new FolderDlg(this);
-        dlg.show(BaseDroidApp.EXT_STORAGE, R.string.confirmclose_title, R.id.actions_doSaveAndClose, R.id.actions_doClose);
+        dlg.show(EBookDroid.EXT_STORAGE, R.string.confirmclose_title, Actions.actions_doSaveAndClose, Actions.actions_doClose);
     }
 
-    @ActionMethod(ids = R.id.actions_doSaveAndClose)
+    @ActionMethod(ids = Actions.actions_doSaveAndClose)
     public void doSaveAndClose(final ActionEx action) {
-        final File targetFolder = action.getParameter(FolderDlg.SELECTED_FOLDER);
+//        final File targetFolder = action.getParameter(FolderDlg.SELECTED_FOLDER);
         final File source = new File(m_fileName);
-        final File target = new File(targetFolder, source.getName());
-
+        String targetName = (!TextUtils.isEmpty(uniqueBookCode) ? uniqueBookCode : "") + "_" + source.getName();
+        BaseEBookDroid.APP_BOOK_STORAGE.mkdirs();
+        final File target = new File(BaseEBookDroid.APP_BOOK_STORAGE, targetName);
         try {
             FileUtils.copy(source, target);
             SettingsManager.copyBookSettings(target, bookSettings);
@@ -866,21 +873,22 @@ public class ViewerActivityController extends AbstractActivityController<ViewerA
         doClose(action);
     }
 
-    @ActionMethod(ids = R.id.actions_doClose)
+    @ActionMethod(ids = Actions.actions_doClose)
     public void doClose(final ActionEx action) {
         if (documentModel != null) {
             documentModel.recycle();
         }
-        if (scheme != null && scheme.temporary) {
+        /*if (scheme != null && scheme.temporary) {
             CacheManager.clear(m_fileName);
-        }
+        }*/
+        CacheManager.clear();
         SettingsManager.releaseBookSettings(id, bookSettings);
 
-        if (getOrCreateAction(R.id.actions_doClose).getParameter("up", Boolean.FALSE).booleanValue()) {
+/*        if (getOrCreateAction(Actions.actions_doClose).getParameter("up", Boolean.FALSE).booleanValue()) {
             goUp();
-        } else {
+        } else {*/
             getManagedComponent().finish();
-        }
+//        }
     }
 
     private void goUp() {

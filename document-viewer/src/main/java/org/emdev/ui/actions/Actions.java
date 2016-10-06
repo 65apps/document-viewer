@@ -1,0 +1,42 @@
+package org.emdev.ui.actions;
+
+public final class Actions {
+    public static final int actions_redecodingWithPassword = 0;
+    public static final int actions_gotoOutlineItem = 1;
+    public static final int actions_addBookmark = 2;
+    public static final int actions_goToBookmarkGroup = 3;
+    public static final int actions_goToBookmark = 4;
+    public static final int actions_doSearch = 5;
+    public static final int actions_doSearchBack = 6;
+    public static final int actions_no_action = 7;
+    public static final int actions_toggleTouchManagerView = 8;
+    public static final int actions_openOptionsMenu = 9;
+    public static final int actions_verticalConfigScrollUp = 10;
+    public static final int actions_verticalConfigScrollDown = 11;
+    public static final int actions_quickZoom = 12;
+    public static final int actions_zoomToColumn = 13;
+    public static final int actions_leftTopCorner = 14;
+    public static final int actions_rightTopCorner = 15;
+    public static final int actions_leftBottomCorner = 16;
+    public static final int actions_rightBottomCorner = 17;
+    public static final int actions_clearRecent = 18;
+    public static final int actions_searchBook = 19;
+    public static final int actions_downloadBook = 20;
+    public static final int actions_retryDownloadBook = 21;
+    public static final int actions_addFeed = 22;
+    public static final int actions_editFeed = 23;
+    public static final int actions_deleteFeed = 24;
+    public static final int actions_setFeedAuth = 25;
+    public static final int actions_doCopyBook = 26;
+    public static final int actions_doMoveBook = 27;
+    public static final int actions_doRenameBook = 28;
+    public static final int actions_doDeleteBook = 29;
+    public static final int actions_selectShelf = 30;
+    public static final int actions_applyCrop = 31;
+    public static final int actions_storageGroup = 32;
+    public static final int actions_storage = 33;
+    public static final int actions_showSaveDlg = 34;
+    public static final int actions_doSaveAndClose = 35;
+    public static final int actions_doClose = 36;
+    public static final int actions_mainmenu_close = 38;
+}

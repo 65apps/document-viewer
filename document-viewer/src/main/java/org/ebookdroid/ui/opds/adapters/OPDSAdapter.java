@@ -1,5 +1,6 @@
 package org.ebookdroid.ui.opds.adapters;
 
+import org.emdev.ui.actions.Actions;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.common.cache.CacheManager;
 import org.ebookdroid.common.cache.ThumbnailFile;
@@ -344,7 +345,7 @@ public class OPDSAdapter extends BaseExpandableListAdapter {
         final ActionDialogBuilder b = new ActionDialogBuilder(context, actions);
         b.setTitle(R.string.opds_error_title);
         b.setMessage(R.string.opds_error_msg, msg);
-        if (pbAction != R.id.actions_no_action) {
+        if (pbAction != Actions.actions_no_action) {
             b.setPositiveButton(pbLabel, pbAction, new Constant("info", result));
             b.setNegativeButton();
         } else {
@@ -363,7 +364,7 @@ public class OPDSAdapter extends BaseExpandableListAdapter {
         b.setTitle(R.string.opds_authfeed_title);
         b.setMessage(R.string.opds_authfeed_msg);
         b.setView(view);
-        b.setPositiveButton(R.string.opds_authfeed_ok, R.id.actions_setFeedAuth, new EditableValue("username",
+        b.setPositiveButton(R.string.opds_authfeed_ok, Actions.actions_setFeedAuth, new EditableValue("username",
                 editUsername), new EditableValue("password", editPassword), new Constant("info", info));
 
         b.setNegativeButton();
@@ -371,7 +372,7 @@ public class OPDSAdapter extends BaseExpandableListAdapter {
         b.show();
     }
 
-    @ActionMethod(ids = R.id.actions_setFeedAuth)
+    @ActionMethod(ids = Actions.actions_setFeedAuth)
     public void setFeedAuth(final ActionEx action) {
         final String username = action.getParameter("username").toString();
         final String password = ((PasswordEditable) action.getParameter("password")).getPassword();
@@ -391,7 +392,7 @@ public class OPDSAdapter extends BaseExpandableListAdapter {
         store();
     }
 
-    @ActionMethod(ids = R.id.actions_retryDownloadBook)
+    @ActionMethod(ids = Actions.actions_retryDownloadBook)
     public void retryDownload(final ActionEx action) {
         final DownloadBookResult info = action.getParameter("info");
         executor.startBookDownload(info.book, info.link);

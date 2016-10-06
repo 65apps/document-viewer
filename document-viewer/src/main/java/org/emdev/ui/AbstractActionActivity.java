@@ -1,8 +1,5 @@
 package org.emdev.ui;
 
-import org.sufficientlysecure.viewer.R;
-import org.ebookdroid.ui.about.AboutActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,13 +7,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.util.concurrent.atomic.AtomicLong;
-
+import org.ebookdroid.ui.about.AboutActivity;
 import org.emdev.common.log.LogContext;
 import org.emdev.common.log.LogManager;
 import org.emdev.ui.actions.ActionEx;
 import org.emdev.ui.actions.ActionMenuHelper;
 import org.emdev.ui.actions.ActionMethod;
+import org.emdev.ui.actions.Actions;
+import org.sufficientlysecure.viewer.R;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class AbstractActionActivity<A extends Activity, C extends AbstractActivityController<A>> extends
         Activity implements ActivityEvents {
@@ -374,7 +374,7 @@ public abstract class AbstractActionActivity<A extends Activity, C extends Abstr
         }
     }
 
-    @ActionMethod(ids = R.id.mainmenu_about)
+    @ActionMethod(ids = {/*R.id.mainmenu_about*/})
     public void showAbout(final ActionEx action) {
         final Intent i = new Intent(this, AboutActivity.class);
         startActivity(i);

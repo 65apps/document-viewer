@@ -1,9 +1,8 @@
 package org.ebookdroid.common.settings.types;
 
-import org.ebookdroid.EBookDroidApp;
-import org.sufficientlysecure.viewer.R;
-
+import org.ebookdroid.app.EBookDroid;
 import org.emdev.utils.enums.ResourceConstant;
+import org.sufficientlysecure.viewer.R;
 
 /**
  * The Enum PageAlign.
@@ -26,7 +25,7 @@ public enum PageAlign implements ResourceConstant {
      *            the res value
      */
     private PageAlign(final int resId) {
-        this.resValue = EBookDroidApp.context.getString(resId);
+        this.resValue = EBookDroid.context.getString(resId);
     }
 
     /**

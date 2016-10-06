@@ -1,6 +1,6 @@
 package org.ebookdroid.core.curl;
 
-import org.ebookdroid.EBookDroidApp;
+import org.ebookdroid.app.EBookDroid;
 import org.sufficientlysecure.viewer.R;
 import org.ebookdroid.core.SinglePageController;
 
@@ -34,7 +34,7 @@ public enum PageAnimationType implements ResourceConstant {
      *            the res value
      */
     private PageAnimationType(final int resId, final boolean hardwareAccelSupported) {
-        this.resValue = EBookDroidApp.context.getString(resId);
+        this.resValue = EBookDroid.context.getString(resId);
         this.hardwareAccelSupported = hardwareAccelSupported;
     }
 
